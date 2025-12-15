@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spray Precision — Seletor técnico de bico de pulverização</title>
+
+<style>
+  :root{font-family:Arial,Helvetica,sans-serif;}
+  body{margin:0;background:#f4f6f8;padding:18px;}
+  .wrap{max-width:1150px;margin:0 auto;}
+  .card{background:#fff;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:18px;}
+  h1{margin:0 0 6px;font-size:22px;}
+  p{margin:6px 0 12px;color:#444;line-height:1.35;}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;}
+  .field{grid-column:span 4;}
+  .field.w6{grid-column:span 6;}
+  label{display:block;font-weight:700;margin-bottom:6px;}
+  input{width:100%;padding:10px 12px;border:1px solid #cfd6df;border-radius:10px;font-size:14px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+  button{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#111;color:#fff;}
+  button.secondary{background:#e9ecf2;color:#111;}
+  .segbtn{background:#e9ecf2;color:#111;}
+  .segbtn.active{background:#111;color:#fff;}
+  .note{background:#fff7d6;border:1px solid #ffeaa1;padding:10px 12px;border-radius:12px;color:#333;margin-top:12px;}
+  table{width:100%;border-collapse:collapse;margin-top:14px;overflow:hidden;border-radius:12px;}
+  th,td{padding:10px;border-bottom:1px solid #eef1f6;font-size:14px;text-align:center;}
+  th{background:#f2f4f8;}
+  td.left,th.left{text-align:left;}
+  .tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:800;}
+  .ok{background:#e7f8ee;color:#146c2e;}
+  .bad{background:#ffe8e8;color:#8b1a1a;}
+  .mid{background:#e9f0ff;color:#1c3f8c;}
+  .mono{font-family:ui-monospace,Consolas,monospace;}
+  .muted{color:#666;font-size:13px;}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <div class="card">
+
+    <h1>Spray Precision — Seletor técnico de bico de pulverização</h1>
+
+    <p class="muted" id="formulaText">
+      Q (L/min por bico) = (L/ha × km/h × espaçamento(m)) / 600 ·
+      P (bar) = 3 × (Q / Q@3bar)²
+    </p>
+
+    <div class="grid">
+
+      <div class="field">
+        <label>Espaçamento entre bicos</label>
+        <div class="row" style="margin-bottom:8px;">
+          <button type="button" class="segbtn active" id="btn35" onclick="setSpacing(35)">35 cm</button>
+          <button type="button" class="segbtn" id="btn50" onclick="setSpacing(50)">50 cm</button>
+          <span class="muted">ou ajuste manual:</span>
+        </div>
+        <input id="spacingCm" type="number" step="0.1" value="35" />
+      </div>
+
+      <div class="field">
+        <label>Vazão desejada (L/ha)</label>
+        <input id="rateLha" type="number" step="0.1" value="60" />
+      </div>
+
+      <div class="field">
+        <label>Unidade de pressão</label>
+        <div class="row">
+          <button type="button" class="segbtn active" id="btnBar" onclick="setUnit('bar')">bar</button>
+          <button type="button" class="segbtn" id="btnPsi" onclick="setUnit('psi')">psi</button>
+        </div>
+        <div class="muted" style="margin-top:6px;">
+          Em PSI, o cálculo interno usa referência ~43,5 psi (equivalente a 3 bar).
+        </div>
+      </div>
+
+      <div class="field">
+        <label id="pressureLabel">Faixa de pressão (bar) – mín / máx</label>
+        <div style="display:flex;gap:10px;">
+          <input id="pMin" type="number" step="0.1" value="1.8" />
+          <input id="pMax" type="number" step="0.1" value="5.0" />
+        </div>
+      </div>
+
+      <div class="field w6">
+        <label>Velocidades (km/h) – preencha as 3 para “modo real”</label>
+        <div style="display:flex;gap:10px;">
+          <input id="vMin" type="number" step="0.1" placeholder="V mín (ex: 13)" />
+          <input id="vAvg" type="number" step="0.1" placeholder="V média (ex: 16)" />
+          <input id="vMax" type="number" step="0.1" placeholder="V máx (ex: 18)" />
+        </div>
+        <div class="muted" style="margin-top:6px;">
+          Se qualquer um ficar vazio, ele NÃO entra no modo real — ele usa as referências abaixo.
+        </div>
+      </div>
+
+      <div class="field w6">
+        <label>Velocidades de referência (km/h) – usadas quando NÃO há modo real</label>
+        <div style="display:flex;gap:10px;">
+          <input id="ref1" type="number" step="0.1" value="12" />
+          <input id="ref2" type="number" step="0.1" value="16" />
+          <input id="ref3" type="number" step="0.1" value="20" />
+        </div>
+      </div>
+
+    </div>
+
+    <div class="btns">
+      <button onclick="calcular()">Calcular</button>
+      <button class="secondary" onclick="limparVel()">Limpar velocidades</button>
+    </div>
+
+    <div id="msg" class="note" style="display:none;"></div>
+    <div id="tabela"></div>
+
+    <div class="note">
+      <b>Observação:</b> ISO define <b>vazão</b>. Tipo de jato/ângulo/classe de gotas é outra decisão.
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const NOZZLES = [
+    { iso:"005",  q3:0.20 },
+    { iso:"01",   q3:0.39 },
+    { iso:"0134", q3:0.53 },
+    { iso:"015",  q3:0.59 },
+    { iso:"0175", q3:0.69 },
+    { iso:"02",   q3:0.79 },
+    { iso:"025",  q3:0.99 },
+    { iso:"03",   q3:1.19 },
+    { iso:"04",   q3:1.59 },
+    { iso:"05",   q3:1.98 },
+    { iso:"06",   q3:2.38 },
+    { iso:"08",   q3:3.17 }
+  ];
+
+  let PRESS_UNIT = "bar";
+  const BAR_TO_PSI = 14.5037738;
+  const P_REF_BAR = 3.0;
+  const P_REF_PSI = P_REF_BAR * BAR_TO_PSI;
+
+  function unitLabel(){ return PRESS_UNIT === "bar" ? "bar" : "psi"; }
+  function pRef(){ return PRESS_UNIT === "bar" ? P_REF_BAR : P_REF_PSI; }
+
+  function tag(cls, text){ return `<span class="tag ${cls}">${text}</span>`; }
+
+  function num(id){
+    const v = document.getElementById(id).value;
+    if (v === "" || v === null || v === undefined) return null;
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function setSpacing(v){
+    document.getElementById("spacingCm").value = v;
+    document.getElementById("btn35").classList.toggle("active", v===35);
+    document.getElementById("btn50").classList.toggle("active", v===50);
+  }
+
+  function limparVel(){
+    ["vMin","vAvg","vMax"].forEach(id=>document.getElementById(id).value="");
+  }
+
+  function setUnit(u){
+    if (u === PRESS_UNIT) return;
+
+    const pMinEl = document.getElementById("pMin");
+    const pMaxEl = document.getElementById("pMax");
+
+    const oldMin = Number(pMinEl.value);
+    const oldMax = Number(pMaxEl.value);
+
+    const oldUnit = PRESS_UNIT;
+    PRESS_UNIT = u;
+
+    document.getElementById("btnBar").classList.toggle("active", u==="bar");
+    document.getElementById("btnPsi").classList.toggle("active", u==="psi");
+
+    document.getElementById("pressureLabel").innerText = `Faixa de pressão (${unitLabel()}) – mín / máx`;
+
+    document.getElementById("formulaText").innerText =
+      PRESS_UNIT === "bar"
+        ? "Q (L/min por bico) = (L/ha × km/h × espaçamento(m)) / 600 · P (bar) = 3 × (Q / Q@3bar)²"
+        : "Q (L/min por bico) = (L/ha × km/h × espaçamento(m)) / 600 · P (psi) = 43,5 × (Q / Q@3bar)²";
+
+    if (Number.isFinite(oldMin)){
+      pMinEl.value = (oldUnit==="bar" && u==="psi")
+        ? (oldMin * BAR_TO_PSI).toFixed(1)
+        : (oldMin / BAR_TO_PSI).toFixed(1);
+    }
+    if (Number.isFinite(oldMax)){
+      pMaxEl.value = (oldUnit==="bar" && u==="psi")
+        ? (oldMax * BAR_TO_PSI).toFixed(1)
+        : (oldMax / BAR_TO_PSI).toFixed(1);
+    }
+  }
+
+  function qPorBico(rateLha, speedKmh, spacingM){
+    return (rateLha * speedKmh * spacingM) / 600.0;
+  }
+  function pressaoNecessaria(q, q3){
+    return pRef() * Math.pow(q / q3, 2);
+  }
+  function velocidadePara(rateLha, spacingM, q){
+    return (q * 600.0) / (rateLha * spacingM);
+  }
+
+  function calcular(){
+    const spacingCm = num("spacingCm");
+    const rateLha   = num("rateLha");
+    const pMin      = num("pMin");
+    const pMax      = num("pMax");
+
+    const vMin = num("vMin");
+    const vAvg = num("vAvg");
+    const vMax = num("vMax");
+
+    const ref1 = num("ref1");
+    const ref2 = num("ref2");
+    const ref3 = num("ref3");
+
+    const msg = document.getElementById("msg");
+    const tabela = document.getElementById("tabela");
+
+    if (!spacingCm || !rateLha || !pMin || !pMax || spacingCm<=0 || rateLha<=0 || pMin<=0 || pMax<=0 || pMax<=pMin){
+      msg.style.display="block";
+      msg.innerHTML=`Preencha corretamente: espaçamento, L/ha e pressão (máx maior que mín) em <b>${unitLabel()}</b>.`;
+      tabela.innerHTML="";
+      return;
+    }
+
+    const spacingM = spacingCm/100.0;
+
+    const modoReal = (vMin && vAvg && vMax && vMin>0 && vAvg>0 && vMax>0);
+
+    let speeds = [];
+    if (modoReal){
+      speeds = [
+        {k:"mín", v:vMin},
+        {k:"média", v:vAvg},
+        {k:"máx", v:vMax}
+      ].sort((a,b)=>a.v-b.v);
+    } else {
+      const arr = [
+        {k:"ref 1", v:ref1},
+        {k:"ref 2", v:ref2},
+        {k:"ref 3", v:ref3},
+      ].filter(x=>x.v && x.v>0).sort((a,b)=>a.v-b.v);
+      speeds = arr.length ? arr : [{k:"ref", v:16}];
+    }
+
+    msg.style.display="block";
+    msg.innerHTML = `
+      <b>Entradas:</b> Espaçamento <span class="mono">${spacingCm.toFixed(1)} cm</span> ·
+      Taxa <span class="mono">${rateLha.toFixed(1)} L/ha</span> ·
+      Pressão <span class="mono">${pMin.toFixed(1)}–${pMax.toFixed(1)} ${unitLabel()}</span> ·
+      ${modoReal
+        ? `Modo: <b>Velocidades reais</b> (${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
+        : `Modo: <b>Sem velocidades reais</b> (pressões em ${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
+      }
+    `;
+
+    const rows = NOZZLES.map(nz=>{
+      const pres = speeds.map(s=>{
+        const q = qPorBico(rateLha, s.v, spacingM);
+        const p = pressaoNecessaria(q, nz.q3);
+        const ok = (p >= pMin && p <= pMax);
+        return { ...s, q, p, ok };
+      });
+
+      const qAtPmin = nz.q3 * Math.sqrt(pMin / pRef());
+      const qAtPmax = nz.q3 * Math.sqrt(pMax / pRef());
+      const vAtPmin = velocidadePara(rateLha, spacingM, qAtPmin);
+      const vAtPmax = velocidadePara(rateLha, spacingM, qAtPmax);
+      const span = vAtPmax - vAtPmin;
+
+      let recomendado = false;
+      if (modoReal){
+        recomendado = pres.every(x => x.ok);
+      } else {
+        const vLow = Math.min(...speeds.map(s=>s.v));
+        const vHigh = Math.max(...speeds.map(s=>s.v));
+        const overlapLow = Math.max(vAtPmin, vLow);
+        const overlapHigh = Math.min(vAtPmax, vHigh);
+        const overlap = Math.max(0, overlapHigh - overlapLow);
+        recomendado = overlap >= 2.0;
+      }
+
+      const pMean = pres.reduce((a,x)=>a+x.p,0)/pres.length;
+
+      return { nz, pres, vAtPmin, vAtPmax, span, recomendado, pMean };
+    });
+
+    rows.sort((a,b)=>{
+      if (a.recomendado !== b.recomendado) return a.recomendado ? -1 : 1;
+      const da = Math.abs(a.pMean - pRef());
+      const db = Math.abs(b.pMean - pRef());
+      if (da !== db) return da - db;
+      return b.span - a.span;
+    });
+
+    let html = `<table>
+      <thead>
+        <tr>
+          <th class="left">ISO</th>
+          <th>Q @ 3 bar<br><span class="muted">(L/min)</span></th>
+          ${speeds.map(s=>`<th>${s.k}<br>${s.v} km/h</th>`).join("")}
+          <th>Janela de velocidade<br><span class="muted">(Pmin–Pmax)</span></th>
+          <th>Veredito</th>
+        </tr>
+      </thead>
+      <tbody>`;
+
+    for (const r of rows){
+      const pCells = r.pres.map(x=>{
+        const cls = x.ok ? "ok" : "bad";
+        return `<td>
+          ${tag(cls, `${x.p.toFixed(1)} ${unitLabel()}`)}<br>
+          <span class="muted mono">Q ${x.q.toFixed(3)} L/min</span>
+        </td>`;
+      }).join("");
+
+      const janela = `${r.vAtPmin.toFixed(1)} – ${r.vAtPmax.toFixed(1)} km/h`;
+      const janelaTag = `${tag("mid", janela)} <span class="muted">(Δ ${r.span.toFixed(1)})</span>`;
+
+      const ver = r.recomendado ? tag("ok","RECOMENDADO") : tag("bad","NÃO");
+      html += `<tr>
+        <td class="left"><b>ISO ${r.nz.iso}</b></td>
+        <td class="mono">${r.nz.q3.toFixed(2)}</td>
+        ${pCells}
+        <td>${janelaTag}</td>
+        <td>${ver}</td>
+      </tr>`;
+    }
+
+    html += `</tbody></table>`;
+
+    const top3 = rows.filter(r=>r.recomendado).slice(0,3).map(r=>`ISO ${r.nz.iso}`).join(", ");
+    html += `<p class="muted" style="margin-top:10px;">
+      <b>Top sugeridos:</b> ${top3 ? top3 : "nenhum bico ficou dentro da faixa em todas as velocidades (ajuste L/ha, velocidades ou pressão)."}
+    </p>`;
+
+    tabela.innerHTML = html;
+  }
+
+  document.getElementById("pressureLabel").innerText = `Faixa de pressão (${unitLabel()}) – mín / máx`;
+</script>
+</body>
+</html>
