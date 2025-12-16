@@ -15,33 +15,23 @@
     --shadow: 0 8px 24px rgba(0,0,0,.08);
     --radius:14px;
   }
-
   body{margin:0;background:var(--bg);padding:14px;}
   .wrap{max-width:1150px;margin:0 auto;}
   .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;}
-  h1{margin:0 0 8px;font-size:20px;line-height:1.15;}
-  p{margin:6px 0 12px;color:#444;line-height:1.35;}
-  .muted{color:var(--muted);font-size:13px;}
+  h1{margin:0 0 8px;font-size:20px;line-height:1.2;}
+  .muted{color:var(--muted);font-size:13px;line-height:1.35;}
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono";}
-
-  /* ✅ MOBILE-FIRST GRID: 1 coluna no celular */
-  .grid{display:grid;grid-template-columns:1fr;gap:12px;}
-  .field{grid-column:auto;}
-  .field.w6{grid-column:auto;}
-
-  label{display:block;font-weight:800;margin-bottom:6px;font-size:14px;}
-
+  label{display:block;font-weight:800;margin:0 0 6px;font-size:14px;}
   input{
     width:100%;
     padding:12px 12px;
     border:1px solid var(--border);
     border-radius:12px;
-    font-size:16px; /* ✅ evita zoom do iOS */
+    font-size:16px; /* evita zoom do iOS */
     box-sizing:border-box;
   }
-
+  .grid{display:grid;grid-template-columns:1fr;gap:12px;}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-
   .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
   button{
     border:0;border-radius:12px;
@@ -50,50 +40,76 @@
     cursor:pointer;
     background:#111;color:#fff;
     font-size:15px;
-    min-height:44px; /* ✅ touch */
+    min-height:44px;
   }
   button.secondary{background:#e9ecf2;color:#111;}
-
-  .segbtn{background:#e9ecf2;color:#111;}
+  .segbtn{background:#e9ecf2;color:#111;border-radius:999px;}
   .segbtn.active{background:#111;color:#fff;}
-  .segbtn{min-height:44px;padding:10px 14px;border-radius:999px;}
+  .note{background:#fff7d6;border:1px solid #ffeaa1;padding:12px;border-radius:14px;color:#333;margin-top:12px;}
+  .tag{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:900;}
+  .ok{background:#e7f8ee;color:#146c2e;}
+  .bad{background:#ffe8e8;color:#8b1a1a;}
+  .mid{background:#e9f0ff;color:#1c3f8c;}
 
-  .note{
-    background:#fff7d6;border:1px solid #ffeaa1;
-    padding:12px 12px;border-radius:14px;color:#333;margin-top:12px;
+  /* ✅ MOBILE: botões em 2 colunas */
+  @media (max-width: 520px){
+    .btns button{flex:1;}
   }
 
-  /* ✅ tabela scrollável no celular */
+  /* ✅ DESKTOP: volta pra grid 12 col */
+  @media (min-width: 900px){
+    body{padding:18px;}
+    .card{padding:18px;}
+    h1{font-size:22px;}
+    .grid{grid-template-columns:repeat(12,1fr);gap:12px;}
+    .field{grid-column:span 4;}
+    .field.w6{grid-column:span 6;}
+    input{font-size:14px;}
+  }
+
+  /* ===== RESULTADOS ===== */
+  /* tabela (desktop/landscape) */
   .tableWrap{
     margin-top:14px;
     overflow-x:auto;
     -webkit-overflow-scrolling:touch;
     border-radius:14px;
     border:1px solid #eef1f6;
+    background:#fff;
+    display:none; /* mobile portrait usa cards */
   }
-  table{width:100%;border-collapse:collapse;min-width:820px;}
+  table{width:100%;border-collapse:collapse;min-width:860px;}
   th,td{padding:10px;border-bottom:1px solid #eef1f6;font-size:14px;text-align:center;white-space:nowrap;}
-  th{background:#f2f4f8;position:sticky;top:0;z-index:1;}
+  th{background:#f2f4f8;}
   td.left,th.left{text-align:left;white-space:normal;}
-  .tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:900;}
-  .ok{background:#e7f8ee;color:#146c2e;}
-  .bad{background:#ffe8e8;color:#8b1a1a;}
-  .mid{background:#e9f0ff;color:#1c3f8c;}
 
-  /* ✅ em telas maiores: volta para 12 colunas */
-  @media (min-width: 900px){
-    body{padding:18px;}
-    .card{padding:18px;}
-    h1{font-size:22px;}
-    .grid{grid-template-columns:repeat(12,1fr);}
-    .field{grid-column:span 4;}
-    .field.w6{grid-column:span 6;}
-    input{font-size:14px;}
+  /* cards (mobile portrait) */
+  .cards{display:block;margin-top:14px;}
+  .resultCard{
+    background:#fff;border:1px solid #eef1f6;border-radius:14px;
+    padding:12px;margin-bottom:10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
   }
+  .rcTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+  .rcIso{font-weight:900;}
+  .rcSub{font-size:12px;color:var(--muted);margin-top:2px;}
+  .rcLines{margin-top:10px;display:grid;gap:8px;}
+  .line{
+    display:flex;justify-content:space-between;gap:10px;align-items:center;
+    padding:8px 10px;border-radius:12px;background:#f7f9fc;border:1px solid #eef1f6;
+  }
+  .lineLeft{font-weight:800;font-size:13px;}
+  .lineRight{text-align:right;}
+  .lineRight .p{font-weight:900;}
+  .lineRight .q{font-size:12px;color:var(--muted);}
+  .rcBottom{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .rcWindow{font-size:13px;color:#111;}
+  .divider{height:1px;background:#eef1f6;margin:10px 0;}
 
-  /* ✅ ajuda no celular: botão calcular ocupa largura */
-  @media (max-width: 520px){
-    .btns button{flex:1;}
+  /* ✅ quando estiver em landscape/tablet, mostra tabela e esconde cards */
+  @media (min-width: 700px){
+    .tableWrap{display:block;}
+    .cards{display:none;}
   }
 </style>
 </head>
@@ -110,7 +126,6 @@
     </p>
 
     <div class="grid">
-
       <div class="field">
         <label>Espaçamento entre bicos</label>
         <div class="row" style="margin-bottom:8px;">
@@ -133,7 +148,7 @@
           <button type="button" class="segbtn" id="btnPsi" onclick="setUnit('psi')">psi</button>
         </div>
         <div class="muted" style="margin-top:6px;">
-          Em PSI, o cálculo usa referência ~43,5 psi (equiv. 3 bar).
+          Em PSI, referência ~43,5 psi (equivalente a 3 bar).
         </div>
       </div>
 
@@ -165,7 +180,6 @@
           <input id="ref3" type="number" step="0.1" value="20" inputmode="decimal" />
         </div>
       </div>
-
     </div>
 
     <div class="btns">
@@ -174,12 +188,17 @@
     </div>
 
     <div id="msg" class="note" style="display:none;"></div>
-    <div id="tabela"></div>
+
+    <!-- ✅ Mobile portrait: cards -->
+    <div id="cards" class="cards"></div>
+
+    <!-- ✅ Tablet/desktop/landscape: table -->
+    <div id="tabelaWrap" class="tableWrap"></div>
 
     <div class="note">
       <b>Observação:</b> ISO define <b>vazão</b>. Tipo de jato/ângulo/classe de gotas é outra decisão.
       <div class="muted" style="margin-top:6px;">
-        No celular: deslize a tabela para o lado (↔) se precisar ver todas as colunas.
+        No celular (vertical) o resultado aparece em <b>cards</b>. No landscape/desktop aparece em <b>tabela</b>.
       </div>
     </div>
 
@@ -287,12 +306,14 @@
     const ref3 = num("ref3");
 
     const msg = document.getElementById("msg");
-    const tabela = document.getElementById("tabela");
+    const cards = document.getElementById("cards");
+    const tabelaWrap = document.getElementById("tabelaWrap");
 
     if (!spacingCm || !rateLha || !pMin || !pMax || spacingCm<=0 || rateLha<=0 || pMin<=0 || pMax<=0 || pMax<=pMin){
       msg.style.display="block";
       msg.innerHTML=`Preencha corretamente: espaçamento, L/ha e pressão (máx maior que mín) em <b>${unitLabel()}</b>.`;
-      tabela.innerHTML="";
+      cards.innerHTML="";
+      tabelaWrap.innerHTML="";
       return;
     }
 
@@ -322,7 +343,7 @@
       Pressão <span class="mono">${pMin.toFixed(1)}–${pMax.toFixed(1)} ${unitLabel()}</span> ·
       ${modoReal
         ? `Modo: <b>Velocidades reais</b> (${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
-        : `Modo: <b>Sem velocidades reais</b> (${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
+        : `Modo: <b>Referência</b> (${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
       }
     `;
 
@@ -364,7 +385,60 @@
       return b.span - a.span;
     });
 
-    let html = `<div class="tableWrap"><table>
+    // TOP sugeridos
+    const top3 = rows.filter(r=>r.recomendado).slice(0,3).map(r=>`ISO ${r.nz.iso}`).join(", ");
+
+    // ====== CARDS (mobile portrait) ======
+    let cardsHtml = "";
+    for (const r of rows){
+      const ver = r.recomendado ? tag("ok","RECOMENDADO") : tag("bad","NÃO");
+      const janela = `${r.vAtPmin.toFixed(1)} – ${r.vAtPmax.toFixed(1)} km/h`;
+      const q3txt = `Q@3bar ${r.nz.q3.toFixed(2)} L/min`;
+
+      cardsHtml += `
+        <div class="resultCard">
+          <div class="rcTop">
+            <div>
+              <div class="rcIso">ISO ${r.nz.iso}</div>
+              <div class="rcSub">${q3txt}</div>
+            </div>
+            <div>${ver}</div>
+          </div>
+
+          <div class="rcLines">
+            ${r.pres.map(x=>{
+              const cls = x.ok ? "ok" : "bad";
+              return `
+                <div class="line">
+                  <div class="lineLeft">${x.k} • ${x.v} km/h</div>
+                  <div class="lineRight">
+                    <div class="p">${tag(cls, `${x.p.toFixed(1)} ${unitLabel()}`)}</div>
+                    <div class="q mono">Q ${x.q.toFixed(3)} L/min</div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="rcBottom">
+            <span class="tag mid">Janela: ${janela}</span>
+            <span class="muted">Δ ${r.span.toFixed(1)}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    cardsHtml += `
+      <p class="muted" style="margin-top:10px;">
+        <b>Top sugeridos:</b> ${top3 ? top3 : "nenhum bico ficou dentro da faixa em todas as velocidades (ajuste L/ha, velocidades ou pressão)."}
+      </p>
+    `;
+    cards.innerHTML = cardsHtml;
+
+    // ====== TABELA (landscape/desktop) ======
+    let tableHtml = `<table>
       <thead>
         <tr>
           <th class="left">ISO</th>
@@ -389,7 +463,7 @@
       const janelaTag = `${tag("mid", janela)} <span class="muted">(Δ ${r.span.toFixed(1)})</span>`;
       const ver = r.recomendado ? tag("ok","RECOMENDADO") : tag("bad","NÃO");
 
-      html += `<tr>
+      tableHtml += `<tr>
         <td class="left"><b>ISO ${r.nz.iso}</b></td>
         <td class="mono">${r.nz.q3.toFixed(2)}</td>
         ${pCells}
@@ -398,14 +472,13 @@
       </tr>`;
     }
 
-    html += `</tbody></table></div>`;
+    tableHtml += `</tbody></table>
+      <p class="muted" style="margin:10px 12px;">
+        <b>Top sugeridos:</b> ${top3 ? top3 : "nenhum bico ficou dentro da faixa em todas as velocidades (ajuste L/ha, velocidades ou pressão)."}
+      </p>
+    `;
 
-    const top3 = rows.filter(r=>r.recomendado).slice(0,3).map(r=>`ISO ${r.nz.iso}`).join(", ");
-    html += `<p class="muted" style="margin-top:10px;">
-      <b>Top sugeridos:</b> ${top3 ? top3 : "nenhum bico ficou dentro da faixa em todas as velocidades (ajuste L/ha, velocidades ou pressão)."}
-    </p>`;
-
-    tabela.innerHTML = html;
+    tabelaWrap.innerHTML = tableHtml;
   }
 
   document.getElementById("pressureLabel").innerText = `Faixa de pressão (${unitLabel()}) – mín / máx`;
