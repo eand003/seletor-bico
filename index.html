@@ -6,34 +6,95 @@
 <title>Spray Precision — Seletor técnico de bico de pulverização</title>
 
 <style>
-  :root{font-family:Arial,Helvetica,sans-serif;}
-  body{margin:0;background:#f4f6f8;padding:18px;}
+  :root{
+    font-family: Arial, Helvetica, sans-serif;
+    --bg:#f4f6f8;
+    --card:#fff;
+    --border:#cfd6df;
+    --muted:#666;
+    --shadow: 0 8px 24px rgba(0,0,0,.08);
+    --radius:14px;
+  }
+
+  body{margin:0;background:var(--bg);padding:14px;}
   .wrap{max-width:1150px;margin:0 auto;}
-  .card{background:#fff;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:18px;}
-  h1{margin:0 0 6px;font-size:22px;}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;}
+  h1{margin:0 0 8px;font-size:20px;line-height:1.15;}
   p{margin:6px 0 12px;color:#444;line-height:1.35;}
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;}
-  .field{grid-column:span 4;}
-  .field.w6{grid-column:span 6;}
-  label{display:block;font-weight:700;margin-bottom:6px;}
-  input{width:100%;padding:10px 12px;border:1px solid #cfd6df;border-radius:10px;font-size:14px;}
+  .muted{color:var(--muted);font-size:13px;}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono";}
+
+  /* ✅ MOBILE-FIRST GRID: 1 coluna no celular */
+  .grid{display:grid;grid-template-columns:1fr;gap:12px;}
+  .field{grid-column:auto;}
+  .field.w6{grid-column:auto;}
+
+  label{display:block;font-weight:800;margin-bottom:6px;font-size:14px;}
+
+  input{
+    width:100%;
+    padding:12px 12px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    font-size:16px; /* ✅ evita zoom do iOS */
+    box-sizing:border-box;
+  }
+
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
   .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
-  button{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#111;color:#fff;}
+  button{
+    border:0;border-radius:12px;
+    padding:12px 14px;
+    font-weight:900;
+    cursor:pointer;
+    background:#111;color:#fff;
+    font-size:15px;
+    min-height:44px; /* ✅ touch */
+  }
   button.secondary{background:#e9ecf2;color:#111;}
+
   .segbtn{background:#e9ecf2;color:#111;}
   .segbtn.active{background:#111;color:#fff;}
-  .note{background:#fff7d6;border:1px solid #ffeaa1;padding:10px 12px;border-radius:12px;color:#333;margin-top:12px;}
-  table{width:100%;border-collapse:collapse;margin-top:14px;overflow:hidden;border-radius:12px;}
-  th,td{padding:10px;border-bottom:1px solid #eef1f6;font-size:14px;text-align:center;}
-  th{background:#f2f4f8;}
-  td.left,th.left{text-align:left;}
-  .tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:800;}
+  .segbtn{min-height:44px;padding:10px 14px;border-radius:999px;}
+
+  .note{
+    background:#fff7d6;border:1px solid #ffeaa1;
+    padding:12px 12px;border-radius:14px;color:#333;margin-top:12px;
+  }
+
+  /* ✅ tabela scrollável no celular */
+  .tableWrap{
+    margin-top:14px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border-radius:14px;
+    border:1px solid #eef1f6;
+  }
+  table{width:100%;border-collapse:collapse;min-width:820px;}
+  th,td{padding:10px;border-bottom:1px solid #eef1f6;font-size:14px;text-align:center;white-space:nowrap;}
+  th{background:#f2f4f8;position:sticky;top:0;z-index:1;}
+  td.left,th.left{text-align:left;white-space:normal;}
+  .tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:900;}
   .ok{background:#e7f8ee;color:#146c2e;}
   .bad{background:#ffe8e8;color:#8b1a1a;}
   .mid{background:#e9f0ff;color:#1c3f8c;}
-  .mono{font-family:ui-monospace,Consolas,monospace;}
-  .muted{color:#666;font-size:13px;}
+
+  /* ✅ em telas maiores: volta para 12 colunas */
+  @media (min-width: 900px){
+    body{padding:18px;}
+    .card{padding:18px;}
+    h1{font-size:22px;}
+    .grid{grid-template-columns:repeat(12,1fr);}
+    .field{grid-column:span 4;}
+    .field.w6{grid-column:span 6;}
+    input{font-size:14px;}
+  }
+
+  /* ✅ ajuda no celular: botão calcular ocupa largura */
+  @media (max-width: 520px){
+    .btns button{flex:1;}
+  }
 </style>
 </head>
 
@@ -57,12 +118,12 @@
           <button type="button" class="segbtn" id="btn50" onclick="setSpacing(50)">50 cm</button>
           <span class="muted">ou ajuste manual:</span>
         </div>
-        <input id="spacingCm" type="number" step="0.1" value="35" />
+        <input id="spacingCm" type="number" step="0.1" value="35" inputmode="decimal" />
       </div>
 
       <div class="field">
         <label>Vazão desejada (L/ha)</label>
-        <input id="rateLha" type="number" step="0.1" value="60" />
+        <input id="rateLha" type="number" step="0.1" value="60" inputmode="decimal" />
       </div>
 
       <div class="field">
@@ -72,36 +133,36 @@
           <button type="button" class="segbtn" id="btnPsi" onclick="setUnit('psi')">psi</button>
         </div>
         <div class="muted" style="margin-top:6px;">
-          Em PSI, o cálculo interno usa referência ~43,5 psi (equivalente a 3 bar).
+          Em PSI, o cálculo usa referência ~43,5 psi (equiv. 3 bar).
         </div>
       </div>
 
       <div class="field">
         <label id="pressureLabel">Faixa de pressão (bar) – mín / máx</label>
         <div style="display:flex;gap:10px;">
-          <input id="pMin" type="number" step="0.1" value="1.8" />
-          <input id="pMax" type="number" step="0.1" value="5.0" />
+          <input id="pMin" type="number" step="0.1" value="1.8" inputmode="decimal" />
+          <input id="pMax" type="number" step="0.1" value="5.0" inputmode="decimal" />
         </div>
       </div>
 
       <div class="field w6">
         <label>Velocidades (km/h) – preencha as 3 para “modo real”</label>
-        <div style="display:flex;gap:10px;">
-          <input id="vMin" type="number" step="0.1" placeholder="V mín (ex: 13)" />
-          <input id="vAvg" type="number" step="0.1" placeholder="V média (ex: 16)" />
-          <input id="vMax" type="number" step="0.1" placeholder="V máx (ex: 18)" />
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <input id="vMin" type="number" step="0.1" placeholder="V mín (ex: 13)" inputmode="decimal" />
+          <input id="vAvg" type="number" step="0.1" placeholder="V média (ex: 16)" inputmode="decimal" />
+          <input id="vMax" type="number" step="0.1" placeholder="V máx (ex: 18)" inputmode="decimal" />
         </div>
         <div class="muted" style="margin-top:6px;">
-          Se qualquer um ficar vazio, ele NÃO entra no modo real — ele usa as referências abaixo.
+          Se qualquer um ficar vazio, usa as velocidades de referência.
         </div>
       </div>
 
       <div class="field w6">
-        <label>Velocidades de referência (km/h) – usadas quando NÃO há modo real</label>
+        <label>Velocidades de referência (km/h)</label>
         <div style="display:flex;gap:10px;">
-          <input id="ref1" type="number" step="0.1" value="12" />
-          <input id="ref2" type="number" step="0.1" value="16" />
-          <input id="ref3" type="number" step="0.1" value="20" />
+          <input id="ref1" type="number" step="0.1" value="12" inputmode="decimal" />
+          <input id="ref2" type="number" step="0.1" value="16" inputmode="decimal" />
+          <input id="ref3" type="number" step="0.1" value="20" inputmode="decimal" />
         </div>
       </div>
 
@@ -117,6 +178,9 @@
 
     <div class="note">
       <b>Observação:</b> ISO define <b>vazão</b>. Tipo de jato/ângulo/classe de gotas é outra decisão.
+      <div class="muted" style="margin-top:6px;">
+        No celular: deslize a tabela para o lado (↔) se precisar ver todas as colunas.
+      </div>
     </div>
 
   </div>
@@ -145,7 +209,6 @@
 
   function unitLabel(){ return PRESS_UNIT === "bar" ? "bar" : "psi"; }
   function pRef(){ return PRESS_UNIT === "bar" ? P_REF_BAR : P_REF_PSI; }
-
   function tag(cls, text){ return `<span class="tag ${cls}">${text}</span>`; }
 
   function num(id){
@@ -234,7 +297,6 @@
     }
 
     const spacingM = spacingCm/100.0;
-
     const modoReal = (vMin && vAvg && vMax && vMin>0 && vAvg>0 && vMax>0);
 
     let speeds = [];
@@ -260,7 +322,7 @@
       Pressão <span class="mono">${pMin.toFixed(1)}–${pMax.toFixed(1)} ${unitLabel()}</span> ·
       ${modoReal
         ? `Modo: <b>Velocidades reais</b> (${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
-        : `Modo: <b>Sem velocidades reais</b> (pressões em ${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
+        : `Modo: <b>Sem velocidades reais</b> (${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
       }
     `;
 
@@ -291,7 +353,6 @@
       }
 
       const pMean = pres.reduce((a,x)=>a+x.p,0)/pres.length;
-
       return { nz, pres, vAtPmin, vAtPmax, span, recomendado, pMean };
     });
 
@@ -303,7 +364,7 @@
       return b.span - a.span;
     });
 
-    let html = `<table>
+    let html = `<div class="tableWrap"><table>
       <thead>
         <tr>
           <th class="left">ISO</th>
@@ -326,8 +387,8 @@
 
       const janela = `${r.vAtPmin.toFixed(1)} – ${r.vAtPmax.toFixed(1)} km/h`;
       const janelaTag = `${tag("mid", janela)} <span class="muted">(Δ ${r.span.toFixed(1)})</span>`;
-
       const ver = r.recomendado ? tag("ok","RECOMENDADO") : tag("bad","NÃO");
+
       html += `<tr>
         <td class="left"><b>ISO ${r.nz.iso}</b></td>
         <td class="mono">${r.nz.q3.toFixed(2)}</td>
@@ -337,7 +398,7 @@
       </tr>`;
     }
 
-    html += `</tbody></table>`;
+    html += `</tbody></table></div>`;
 
     const top3 = rows.filter(r=>r.recomendado).slice(0,3).map(r=>`ISO ${r.nz.iso}`).join(", ");
     html += `<p class="muted" style="margin-top:10px;">
