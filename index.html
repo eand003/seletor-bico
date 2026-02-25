@@ -200,6 +200,10 @@
       <canvas id="chartCanvas"></canvas>
     </div>
 
+    <div style="margin-top:10px;">
+      <button onclick="downloadChartPNG()">Baixar gráfico (PNG)</button>
+    </div>
+
     <div class="note">
       <b>Observação:</b> ISO define <b>vazão</b>. Tipo de jato/ângulo/classe de gotas é outra decisão.
       <div class="muted" style="margin-top:6px;">
@@ -581,6 +585,21 @@ function calcular(){
   }
 
   document.getElementById("pressureLabel").innerText = `Faixa de pressão (${unitLabel()}) – mín / máx`;
+
+function downloadChartPNG(){
+  const canvas = document.getElementById("chartCanvas");
+  if (!canvas){
+    alert("Gráfico ainda não foi gerado.");
+    return;
+  }
+
+  const link = document.createElement("a");
+  link.download = "grafico_spray_precision.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+
+
 </script>
 </body>
 </html>
