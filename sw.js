@@ -1,6 +1,7 @@
 const CACHE_NAME = 'spray-pro-v7';
 const urlsToCache = [
-  './index_v7_premium.html',
+  './',
+  './index.html',
   './manifest.json',
   './logo.png'
 ];
