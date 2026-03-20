@@ -2,7 +2,7 @@
   "name": "Spray Precision PRO",
   "short_name": "Spray PRO",
   "description": "Simulador ISO de Bicos de Pulverização",
-  "start_url": "./index.html",
+  "start_url": "https://eand003.github.io/seletor-bico/index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
