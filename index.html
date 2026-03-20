@@ -203,6 +203,35 @@
     .premium-table tbody tr { transition: background 0.2s; }
     .premium-table tbody tr:hover { background: rgba(255,255,255,0.05); }
 
+    /* Responsividade p/ Tabela em modo retrato (mobile) */
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+      .premium-table { min-width: 100%; }
+      .premium-table thead { display: none; }
+      .premium-table, .premium-table tbody, .premium-table tr, .premium-table td { display: block; width: 100%; }
+      .premium-table tr { margin-bottom: 16px; border: 1px solid var(--glass-border); border-radius: 12px; padding: 4px; background: rgba(0,0,0,0.15); }
+      .premium-table td { 
+        text-align: right; 
+        padding-left: 50%; 
+        position: relative; 
+        border-bottom: 1px solid rgba(255,255,255,0.05); 
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .premium-table td:last-child { border-bottom: 0; }
+      .premium-table td::before { 
+        content: attr(data-label); 
+        position: absolute; 
+        left: 12px; 
+        font-weight: 600; 
+        color: var(--text-muted); 
+        text-transform: uppercase; 
+        font-size: 12px; 
+        text-align: left;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -535,20 +564,20 @@
       </thead><tbody>`;
 
       rows.forEach(r => {
-          const makeCell = (p) => {
+          const makeCell = (lbl, p) => {
               const cls = (p >= sysPMin && p <= sysPMax && p > 0) ? 'ok' : 'bad';
               const color = cls === 'ok' ? 'var(--accent-green)' : 'var(--accent-error)';
-              return `<td style="color:${color}; font-family: Outfit; font-weight: 600;">${isNaN(p)||!isFinite(p)?'--':p.toFixed(1)} ${pUnit}</td>`;
+              return `<td data-label="${lbl}" style="color:${color}; font-family: Outfit; font-weight: 600;">${isNaN(p)||!isFinite(p)?'--':p.toFixed(1)} ${pUnit}</td>`;
           };
           
           html += `<tr>
-            <td style="text-align:left; font-weight:bold; color:${r.nz.color}">ISO ${r.nz.iso}</td>
-            <td style="font-family: Outfit; color:var(--text-muted)">${r.nz.q3.toFixed(2)}</td>
-            ${makeCell(r.pressures[0])}
-            ${makeCell(r.pressures[1])}
-            ${makeCell(r.pressures[2])}
-            <td><span class="status-badge" style="background:rgba(255,255,255,0.05); color:#fff; border:none; padding: 4px 8px;">${r.vAtPmin.toFixed(1)} - ${r.vAtPmax.toFixed(1)}</span></td>
-            <td><span class="status-badge ${r.ok ? 'ok' : 'bad'}" style="padding: 4px 8px;">${r.ok ? 'OK' : 'FORA'}</span></td>
+            <td data-label="Bico ISO" style="text-align:left; font-weight:bold; color:${r.nz.color}">ISO ${r.nz.iso}</td>
+            <td data-label="Q@3bar" style="font-family: Outfit; color:var(--text-muted)">${r.nz.q3.toFixed(2)}</td>
+            ${makeCell("Pressão V. Mín", r.pressures[0])}
+            ${makeCell("Pressão V. Méd", r.pressures[1])}
+            ${makeCell("Pressão V. Máx", r.pressures[2])}
+            <td data-label="Janela (km/h)"><span class="status-badge" style="background:rgba(255,255,255,0.05); color:#fff; border:none; padding: 4px 8px;">${r.vAtPmin.toFixed(1)} - ${r.vAtPmax.toFixed(1)}</span></td>
+            <td data-label="Veredito"><span class="status-badge ${r.ok ? 'ok' : 'bad'}" style="padding: 4px 8px;">${r.ok ? 'OK' : 'FORA'}</span></td>
           </tr>`;
       });
       html += `</tbody>`;
