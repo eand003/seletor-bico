@@ -1083,7 +1083,7 @@
       div.innerHTML = `
         <div class="noz-header">
             <div class="noz-iso">ISO ${r.nz.iso}</div>
-            <div class="noz-q3">@3bar: ${r.nz.q3.toFixed(2)} L/m</div>
+            <div class="noz-q3" title="Padrão de Calibração ISO">@3bar (43.5 psi): ${r.nz.q3.toFixed(2)} L/min</div>
         </div>
         <div class="noz-metrics">
             <div class="metric-row">
@@ -1111,7 +1111,7 @@
       let html = `<thead>
         <tr>
           <th style="text-align:left">ISO</th>
-          <th>Q@3bar</th>
+          <th title="Vazão de fábrica Padrão ISO">Q@3bar<br><span style="font-size:10px; font-weight:400;">(43.5 psi)</span></th>
           <th>Pressão V. Mín</th>
           <th>Pressão V. Méd</th>
           <th>Pressão V. Máx</th>
@@ -1129,11 +1129,11 @@
 
         html += `<tr>
             <td data-label="Bico ISO" style="text-align:left; font-weight:bold; color:${r.nz.color}">ISO ${r.nz.iso}</td>
-            <td data-label="Q@3bar" style="font-family: Outfit; color:var(--text-muted)">${r.nz.q3.toFixed(2)}</td>
+            <td data-label="Q@3bar (43.5 psi)" style="font-family: Outfit; color:var(--text-muted)">${r.nz.q3.toFixed(2)}</td>
             ${makeCell("Pressão V. Mín", r.pressures[0])}
             ${makeCell("Pressão V. Méd", r.pressures[1])}
             ${makeCell("Pressão V. Máx", r.pressures[2])}
-            <td data-label="Janela (km/h)"><span class="status-badge" style="background:rgba(255,255,255,0.05); color:#fff; border:none; padding: 4px 8px;">${r.vAtPmin.toFixed(1)} - ${r.vAtPmax.toFixed(1)}</span></td>
+            <td data-label="Janela (km/h)"><span class="status-badge" style="background:var(--control-bg); color:var(--text-main); border:1px solid var(--control-border); padding: 4px 8px;">${r.vAtPmin.toFixed(1)} - ${r.vAtPmax.toFixed(1)}</span></td>
             <td data-label="Veredito"><span class="status-badge ${r.ok ? 'ok' : 'bad'}" style="padding: 4px 8px;">${r.ok ? 'OK' : 'FORA'}</span></td>
           </tr>`;
       });
