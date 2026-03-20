@@ -880,12 +880,20 @@
           indexAxis: 'y',
           plugins: {
             legend: { display: false },
+            annotation: {
+              annotations: {
+                line1: { type: 'line', xMin: 0, xMax: 0, borderColor: 'transparent', borderDash: [4, 4], borderWidth: 2.5 },
+                line2: { type: 'line', xMin: 0, xMax: 0, borderColor: 'transparent', borderDash: [4, 4], borderWidth: 2.5 }
+              }
+            },
             tooltip: {
-              backgroundColor: 'rgba(10,15,20,0.9)',
+              backgroundColor: isDark ? 'rgba(10,15,20,0.9)' : 'rgba(255,255,255,0.9)',
+              titleColor: isDark ? '#fff' : '#0f172a',
+              bodyColor: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
               titleFont: { family: 'Outfit', size: 16 },
               bodyFont: { size: 14 },
               padding: 12,
-              borderColor: 'rgba(255,255,255,0.1)',
+              borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
               borderWidth: 1,
               callbacks: {
                 label: (ctx) => {
@@ -1050,12 +1058,15 @@
 
       container.innerHTML = '';
       if (fallbackMode) {
-        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; padding: 16px; border: 1px dashed var(--accent-error); border-radius: 12px; background: rgba(255,0,0,0.02); display: flex; flex-direction: column; gap: 8px;">
-              <span style="font-size:24px;">⚠️ Extremo Operacional</span>
-              <p style="color: var(--text-main); font-size: 14px;"><strong>Nenhum bico atende a faixa de velocidade nesses limites de pressão.</strong></p>
-              <p style="color: var(--text-muted); font-size: 13px;">O bico ISO abaixo é a opção mais próxima do ponto ideal, mas operará forçando os limites (risco de falha no leque ou alta deriva).</p>
-          </div>`;
         tops.forEach(r => container.appendChild(createCard(r, 'warning', "MELHOR ALTERNATIVA")));
+        
+        const msgDiv = document.createElement('div');
+        msgDiv.style.cssText = "grid-column: 1/-1; padding: 12px 16px; background: var(--control-bg); border-left: 3px solid #FFC107; border-radius: 8px; display: flex; flex-direction: column; gap: 4px; margin-top: 4px;";
+        msgDiv.innerHTML = `
+            <span style="color: var(--text-main); font-size: 14px; font-weight: 600;">⚠️ Atenção Ténica</span>
+            <p style="color: var(--text-muted); font-size: 13px; line-height: 1.4; margin:0;">Nenhum bico atende plenamente aos limites de pressão estabelecidos. A ponta listada acima é a opção matematicamente mais equilibrada para tentar atingir o alvo.</p>
+        `;
+        container.appendChild(msgDiv);
       } else {
         tops.slice(0, 4).forEach(r => container.appendChild(createCard(r, 'ok', "RECOMENDADO")));
       }
@@ -1185,13 +1196,34 @@
       ];
 
       // Annotations for real speeds
-      myChart.options.plugins.annotation = {
-        annotations: {
-          line1: { type: 'line', xMin: sysVMin, xMax: sysVMin, borderColor: 'rgba(255, 255, 255, 0.4)', borderDash: [5, 5] },
-          line2: { type: 'line', xMin: sysVMax, xMax: sysVMax, borderColor: 'rgba(255, 255, 255, 0.4)', borderDash: [5, 5] }
-        }
-      };
-
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      const dangerColor = isDark ? 'rgba(255, 75, 75, 1)' : 'rgba(220, 38, 38, 1)';
+      
+      if (myChart.options.plugins.annotation && myChart.options.plugins.annotation.annotations) {
+          myChart.options.plugins.annotation.annotations.line1.xMin = sysVMin;
+          myChart.options.plugins.annotation.annotations.line1.xMax = sysVMin;
+          myChart.options.plugins.annotation.annotations.line1.borderColor = dangerColor;
+          
+          myChart.options.plugins.annotation.annotations.line2.xMin = sysVMax;
+          myChart.options.plugins.annotation.annotations.line2.xMax = sysVMax;
+          myChart.options.plugins.annotation.annotations.line2.borderColor = dangerColor;
+      }
+      
+      // Ensure textual contrasts without destructive assignment
+      const textColor = isDark ? 'rgba(255,255,255,0.9)' : '#000000';
+      const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.1)';
+      
+      if (myChart.options.scales.x) {
+          myChart.options.scales.x.ticks.color = textColor;
+          myChart.options.scales.x.grid.color = gridColor;
+          myChart.options.scales.x.title.color = textColor;
+      }
+      if (myChart.options.scales.y) {
+          myChart.options.scales.y.ticks.color = textColor;
+      }
+      
+      Chart.defaults.color = textColor;
+      
       myChart.update();
     }
 
@@ -1218,9 +1250,8 @@
         Chart.defaults.color = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)";
         myChart.options.scales.x.grid.color = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)';
         myChart.options.scales.x.title.color = isDark ? '#fff' : '#0f172a';
-        myChart.options.scales.x.ticks = myChart.options.scales.x.ticks || {};
-        myChart.options.scales.x.ticks.color = isDark ? 'rgba(255,255,255,0.7)' : '#0f172a';
-        myChart.options.scales.y.ticks = myChart.options.scales.y.ticks || {};
+        myChart.options.scales.x.ticks.color = isDark ? 'rgba(255,255,255,0.9)' : '#000000';
+        myChart.options.scales.y.ticks.color = isDark ? 'rgba(255,255,255,0.9)' : '#000000';
         myChart.options.scales.y.ticks.color = isDark ? 'rgba(255,255,255,0.7)' : '#0f172a';
         myChart.options.plugins.tooltip.backgroundColor = isDark ? 'rgba(10,15,20,0.9)' : 'rgba(255,255,255,0.9)';
         myChart.options.plugins.tooltip.titleColor = isDark ? '#fff' : '#0f172a';
