@@ -665,6 +665,7 @@
             </a>
 
             <span style="display:flex; gap: 8px; border-left: 1px solid var(--control-border); padding-left: 10px;">
+              <button id="btnInstall" class="info-btn" title="Instalar App no Celular" style="display: none; width: 32px; height: 32px; font-size: 14px; background: var(--accent-green); color: #000;">📱</button>
               <button class="info-btn" onclick="toggleTheme()" title="Modo Claro/Escuro"
                 style="width: 32px; height: 32px; font-size: 16px;">🌓</button>
               <button class="info-btn" onclick="document.getElementById('helpModal').style.display='flex'"
@@ -1279,6 +1280,29 @@
           .catch(err => console.log('Falha no SW:', err));
       });
     }
+
+    // Instalação PWA Manual
+    let deferredPrompt;
+    const btnInstall = document.getElementById('btnInstall');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Previne o Chrome de mostrar o banner automático (nós controlamos agora)
+      e.preventDefault();
+      deferredPrompt = e;
+      // Mostra nosso botão verde de celular no cabeçalho
+      btnInstall.style.display = 'flex';
+    });
+
+    btnInstall.addEventListener('click', async () => {
+      if (deferredPrompt !== null) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          btnInstall.style.display = 'none';
+        }
+        deferredPrompt = null;
+      }
+    });
   </script>
 </body>
 
