@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spray Precision PRO v6</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0/dist/chartjs-plugin-annotation.min.js"></script>
-  
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+
   <style>
     :root {
       --bg-dark: #05080a;
@@ -23,15 +27,16 @@
       --text-main: #ffffff;
       --text-muted: #cbd5e1;
       --card-radius: 20px;
-      --shadow: 0 16px 40px rgba(0,0,0,0.6);
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
       --bg-img: url('bg_premium.png');
-      
+
       --title-grad-1: #ffffff;
       --title-grad-2: #b0c4de;
       --control-bg: rgba(255, 255, 255, 0.05);
       --control-border: rgba(255, 255, 255, 0.15);
       --table-row-hover: rgba(255, 255, 255, 0.1);
     }
+
     [data-theme="light"] {
       --bg-dark: #e2e8f0;
       --glass-bg: rgba(248, 250, 252, 0.9);
@@ -42,9 +47,9 @@
       --accent-error: #dc2626;
       --text-main: #0f172a;
       --text-muted: #334155;
-      --shadow: 0 16px 40px rgba(0,0,0,0.08);
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
       --bg-img: none;
-      
+
       --title-grad-1: #0f172a;
       --title-grad-2: #334155;
       --control-bg: rgba(255, 255, 255, 0.8);
@@ -52,8 +57,12 @@
       --table-row-hover: rgba(0, 0, 0, 0.05);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg-dark) var(--bg-img) no-repeat center center fixed;
@@ -70,13 +79,20 @@
     body::before {
       content: "";
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: linear-gradient(135deg, var(--bg-dark) 0%, transparent 100%);
       opacity: 0.95;
       z-index: -1;
     }
 
-    h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+    h1,
+    h2,
+    h3 {
+      font-family: 'Outfit', sans-serif;
+    }
 
     .container {
       width: 100%;
@@ -86,9 +102,11 @@
       gap: 24px;
       margin-top: 10px;
     }
-    
+
     @media (min-width: 900px) {
-      .container { grid-template-columns: 350px 1fr; }
+      .container {
+        grid-template-columns: 350px 1fr;
+      }
     }
 
     .glass-panel {
@@ -111,230 +129,563 @@
       align-items: center;
       gap: 16px;
     }
+
     .header-icon {
-      width: 48px; height: 48px;
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
       background: linear-gradient(135deg, var(--accent), var(--accent-green));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; color: #000; box-shadow: 0 0 20px var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #000;
+      box-shadow: 0 0 20px var(--accent-glow);
     }
+
     .header h1 {
-      font-size: 32px; font-weight: 800; letter-spacing: -0.5px;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
       background: linear-gradient(to right, var(--title-grad-1), var(--title-grad-2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
 
     /* Controls Panel */
-    .controls { display: flex; flex-direction: column; gap: 20px; }
-    
-    .control-group { display: flex; flex-direction: column; gap: 8px; }
-    .control-group label {
-      font-weight: 600; font-size: 13px; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between;
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-    .val-display { color: var(--accent); font-weight: 700; font-family: 'Outfit'; font-size: 15px; }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .val-display {
+      color: var(--accent);
+      font-weight: 700;
+      font-family: 'Outfit';
+      font-size: 15px;
+    }
 
     /* Custom Sliders */
     input[type=range] {
-      -webkit-appearance: none; width: 100%; background: transparent; height: 24px;
+      -webkit-appearance: none;
+      width: 100%;
+      background: transparent;
+      height: 24px;
     }
-    input[type=range]:focus { outline: none; }
+
+    input[type=range]:focus {
+      outline: none;
+    }
+
     input[type=range]::-webkit-slider-runnable-track {
-      width: 100%; height: 6px; cursor: pointer;
-      background: rgba(255,255,255,0.1); border-radius: 3px;
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
     }
+
     input[type=range]::-webkit-slider-thumb {
-      height: 20px; width: 20px; border-radius: 50%;
-      background: var(--accent); cursor: pointer;
-      -webkit-appearance: none; margin-top: -7px;
-      box-shadow: 0 0 10px var(--accent-glow); transition: 0.2s;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -7px;
+      box-shadow: 0 0 10px var(--accent-glow);
+      transition: 0.2s;
     }
-    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
-    
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
     .unit-toggle {
-      display: flex; background: var(--control-bg); border-radius: 8px; overflow: hidden;
-      border: 1px solid var(--control-border); padding: 4px; gap: 4px;
+      display: flex;
+      background: var(--control-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--control-border);
+      padding: 4px;
+      gap: 4px;
     }
+
     .unit-toggle button {
-      flex: 1; border: none; background: transparent; color: var(--text-muted); padding: 8px;
-      border-radius: 6px; font-weight: 600; cursor: pointer; font-family: 'Inter'; transition: 0.3s;
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter';
+      transition: 0.3s;
     }
+
     .unit-toggle button.active {
-      background: var(--text-main); color: var(--bg-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      background: var(--text-main);
+      color: var(--bg-dark);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .preset-btn {
-      background: var(--control-bg); border: 1px solid var(--control-border); color: var(--text-muted);
-      border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; font-family: 'Inter'; cursor: pointer; transition: 0.2s;
+      background: var(--control-bg);
+      border: 1px solid var(--control-border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Inter';
+      cursor: pointer;
+      transition: 0.2s;
     }
-    .preset-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
-    .preset-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; box-shadow: 0 0 10px var(--accent-glow); }
 
-    .flex-row { display: flex; gap: 12px; }
-    .flex-row > div { flex: 1; }
-    
+    .preset-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .preset-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 600;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .flex-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .flex-row>div {
+      flex: 1;
+    }
+
     /* Number Inputs */
     input[type=number] {
-      width: 100%; padding: 12px; border-radius: 8px;
-      background: var(--control-bg); border: 1px solid var(--control-border);
-      color: var(--text-main); font-family: 'Outfit'; font-size: 16px; font-weight: 600;
-      text-align: center; transition: 0.3s;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--control-bg);
+      border: 1px solid var(--control-border);
+      color: var(--text-main);
+      font-family: 'Outfit';
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      transition: 0.3s;
     }
-    input[type=number]:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 10px var(--accent-glow); }
+
+    input[type=number]:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
 
     /* Main Dashboard */
-    .dashboard { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
-    
+    .dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+    }
+
     .recommended-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
     }
 
     .nozzle-card {
-      background: var(--control-bg); border: 1px solid var(--glass-border);
-      border-radius: 16px; padding: 20px; position: relative; overflow: hidden;
-      display: flex; flex-direction: column; gap: 12px;
+      background: var(--control-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
     }
-    .nozzle-card:hover { 
-      transform: translateY(-4px); 
+
+    .nozzle-card:hover {
+      transform: translateY(-4px);
       background: var(--table-row-hover);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
     }
+
     .nozzle-card::before {
-      content: ""; position: absolute; top: 0; left: 0; width: 6px; height: 100%;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 100%;
       background: var(--nz-color);
     }
-    .noz-header { display: flex; justify-content: space-between; align-items: center; }
-    .noz-iso { font-family: 'Outfit'; font-weight: 800; font-size: 24px; color: var(--text-main); }
-    .noz-q3 { font-size: 12px; color: var(--text-muted); background: var(--control-bg); padding: 4px 8px; border-radius: 12px; border: 1px solid var(--control-border); }
-    
-    .noz-metrics { display: flex; flex-direction: column; gap: 8px; }
-    .metric-row { display: flex; justify-content: space-between; font-size: 14px; }
-    .metric-label { color: var(--text-muted); }
-    .metric-val { font-weight: 700; color: var(--text-main); font-family: 'Outfit'; }
-    
-    .status-badge {
-      display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-align: center; margin-top: 4px;
+
+    .noz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .status-badge.ok { background: rgba(56, 239, 125, 0.15); color: var(--accent-green); border: 1px solid rgba(56, 239, 125, 0.3); }
-    .status-badge.bad { background: rgba(255, 75, 75, 0.15); color: var(--accent-error); border: 1px solid rgba(255, 75, 75, 0.3); }
-    .status-badge.warning { background: rgba(255, 193, 7, 0.15); color: #FFC107; border: 1px solid rgba(255, 193, 7, 0.3); }
+
+    .noz-iso {
+      font-family: 'Outfit';
+      font-weight: 800;
+      font-size: 24px;
+      color: var(--text-main);
+    }
+
+    .noz-q3 {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--control-bg);
+      padding: 4px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--control-border);
+    }
+
+    .noz-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .metric-label {
+      color: var(--text-muted);
+    }
+
+    .metric-val {
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: 'Outfit';
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .status-badge.ok {
+      background: rgba(56, 239, 125, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(56, 239, 125, 0.3);
+    }
+
+    .status-badge.bad {
+      background: rgba(255, 75, 75, 0.15);
+      color: var(--accent-error);
+      border: 1px solid rgba(255, 75, 75, 0.3);
+    }
+
+    .status-badge.warning {
+      background: rgba(255, 193, 7, 0.15);
+      color: #FFC107;
+      border: 1px solid rgba(255, 193, 7, 0.3);
+    }
 
     .chart-container {
-      position: relative; height: 400px; width: 100%;
-      background: var(--control-bg); border-radius: 16px; padding: 16px; border: 1px solid var(--glass-border);
+      position: relative;
+      height: 400px;
+      width: 100%;
+      background: var(--control-bg);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--glass-border);
     }
 
     .empty-state {
-      padding: 40px; text-align: center; color: var(--text-muted); font-size: 16px;
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      padding: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
-    .table-responsive { overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); margin-top: 8px; }
-    .premium-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-    .premium-table th, .premium-table td { padding: 12px; text-align: center; border-bottom: 1px solid var(--glass-border); font-size: 14px; }
-    .premium-table th { background: var(--control-bg); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 12px; border-bottom: 2px solid var(--glass-border); }
-    .premium-table tbody tr { transition: background 0.2s; }
-    .premium-table tbody tr:hover { background: var(--table-row-hover); }
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      margin-top: 8px;
+    }
+
+    .premium-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    .premium-table th,
+    .premium-table td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 14px;
+    }
+
+    .premium-table th {
+      background: var(--control-bg);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 12px;
+      border-bottom: 2px solid var(--glass-border);
+    }
+
+    .premium-table tbody tr {
+      transition: background 0.2s;
+    }
+
+    .premium-table tbody tr:hover {
+      background: var(--table-row-hover);
+    }
 
     /* Responsividade p/ Tabela em modo retrato (mobile) */
     @media screen and (max-width: 768px) and (orientation: portrait) {
-      .premium-table { min-width: 100%; }
-      .premium-table thead { display: none; }
-      .premium-table, .premium-table tbody, .premium-table tr, .premium-table td { display: block; width: 100%; }
-      .premium-table tr { margin-bottom: 16px; border: 1px solid var(--glass-border); border-radius: 12px; padding: 4px; background: var(--control-bg); }
-      .premium-table td { 
-        text-align: right; 
-        padding-left: 50%; 
-        position: relative; 
-        border-bottom: 1px solid rgba(255,255,255,0.05); 
+      .premium-table {
+        min-width: 100%;
+      }
+
+      .premium-table thead {
+        display: none;
+      }
+
+      .premium-table,
+      .premium-table tbody,
+      .premium-table tr,
+      .premium-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .premium-table tr {
+        margin-bottom: 16px;
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 4px;
+        background: var(--control-bg);
+      }
+
+      .premium-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         min-height: 48px;
         display: flex;
         align-items: center;
         justify-content: flex-end;
       }
-      .premium-table td:last-child { border-bottom: 0; }
-      .premium-table td::before { 
-        content: attr(data-label); 
-        position: absolute; 
-        left: 12px; 
-        font-weight: 600; 
-        color: var(--text-muted); 
-        text-transform: uppercase; 
-        font-size: 12px; 
+
+      .premium-table td:last-child {
+        border-bottom: 0;
+      }
+
+      .premium-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        font-size: 12px;
         text-align: left;
       }
     }
 
     /* Help Modal */
     .info-btn {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-      color: var(--accent); font-size: 22px; font-weight: 800; font-family: 'Outfit';
-      cursor: pointer; transition: 0.3s;
-      display: flex; align-items: center; justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: var(--accent);
+      font-size: 22px;
+      font-weight: 800;
+      font-family: 'Outfit';
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .info-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
-    
+
+    .info-btn:hover {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
     .modal-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      z-index: 1000; display: none; align-items: center; justify-content: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
     }
-    .modal-content {
-      background: #0d1216; border: 1px solid var(--accent);
-      border-radius: var(--card-radius); padding: 32px; max-width: 600px;
-      width: 100%; box-shadow: 0 0 40px rgba(0, 210, 255, 0.15);
-      position: relative; max-height: 90vh; overflow-y: auto; color: var(--text-main);
-    }
-    .modal-content h2 { margin-bottom: 16px; color: var(--accent); font-size: 28px; }
-    .modal-content h3 { color: var(--text-main); margin-top: 24px; margin-bottom: 12px; font-size: 18px; border-bottom: 1px solid var(--control-border); padding-bottom: 8px;}
-    .modal-content p, .modal-content li { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 8px; }
-    .modal-content ul { padding-left: 20px; margin-bottom: 16px; }
-    
-    .close-btn {
-      position: absolute; top: 16px; right: 20px;
-      background: none; border: none; color: var(--text-muted);
-      font-size: 32px; cursor: pointer; transition: 0.2s;
-    }
-    .close-btn:hover { color: var(--text-main); }
 
+    .modal-content {
+      background: #0d1216;
+      border: 1px solid var(--accent);
+      border-radius: var(--card-radius);
+      padding: 32px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 0 40px rgba(0, 210, 255, 0.15);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+      color: var(--text-main);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 16px;
+      color: var(--accent);
+      font-size: 28px;
+    }
+
+    .modal-content h3 {
+      color: var(--text-main);
+      margin-top: 24px;
+      margin-bottom: 12px;
+      font-size: 18px;
+      border-bottom: 1px solid var(--control-border);
+      padding-bottom: 8px;
+    }
+
+    .modal-content p,
+    .modal-content li {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .modal-content ul {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 32px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .close-btn:hover {
+      color: var(--text-main);
+    }
   </style>
 </head>
+
 <body>
 
   <div class="header">
-    <div class="header-icon">💧</div>
-    <div style="flex:1;">
-      <h1>Spray Precision <span style="font-weight:300;">PRO</span></h1>
-      <div style="display:flex; align-items:center; gap:12px; margin-top:6px; flex-wrap:wrap;">
-          <p style="margin-top:0;">Simulador de Bicos ISO para Aplicação</p>
-          <span style="color:var(--glass-border);">|</span>
-          <span style="font-size:13px; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
-            <span>Criado por <strong>Eduardo L. de Andrade</strong></span>
-            <a href="https://wa.me/5565999106415" target="_blank" style="color:#25D366; text-decoration:none; display:flex; align-items:center; gap:4px; font-weight:700;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; width: 100%;">
+      <div class="header-icon">💧</div>
+      <div style="flex:1; min-width: 250px;">
+        <h1>Spray Precision <span style="font-weight:300;">PRO</span></h1>
+        <p style="color:var(--text-muted); font-size: 14px; margin-top: 4px; margin-bottom: 8px;">Simulador de Bicos ISO
+          para Aplicação Agro</p>
+
+        <div
+          style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding: 10px 14px; background: var(--control-bg); border-radius: 12px; border: 1px solid var(--control-border);">
+          <span
+            style="font-size:13px; color:var(--text-muted); display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span>Criado por <strong style="color:var(--text-main);">Eduardo L. de Andrade</strong></span>
+
+            <a href="https://wa.me/5565999106415" target="_blank"
+              style="color:#25D366; text-decoration:none; display:flex; align-items:center; gap:4px; font-weight:700; background: rgba(37,211,102,0.1); padding: 4px 10px; border-radius: 16px; border: 1px solid rgba(37,211,102,0.2);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
               WhatsApp
             </a>
+
+            <span style="display:flex; gap: 8px; border-left: 1px solid var(--control-border); padding-left: 10px;">
+              <button class="info-btn" onclick="toggleTheme()" title="Modo Claro/Escuro"
+                style="width: 32px; height: 32px; font-size: 16px;">🌓</button>
+              <button class="info-btn" onclick="document.getElementById('helpModal').style.display='flex'"
+                title="Como Usar o Simulador" style="width: 32px; height: 32px; font-size: 16px;">?</button>
+            </span>
           </span>
+        </div>
       </div>
     </div>
-    <button class="info-btn" onclick="toggleTheme()" title="Modo Claro/Escuro" style="margin-right: 8px;">🌓</button>
-    <button class="info-btn" onclick="document.getElementById('helpModal').style.display='flex'" title="Como Usar o Simulador">?</button>
   </div>
 
   <div class="container">
     <!-- Controles -->
     <div class="glass-panel controls">
-      <h2 style="font-size: 18px; margin-bottom: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 12px;">Parâmetros</h2>
-      
+      <h2
+        style="font-size: 18px; margin-bottom: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 12px;">
+        Parâmetros</h2>
+
       <div class="control-group">
         <label>Espaçamento entre bicos (cm)</label>
         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
           <button type="button" class="preset-btn spacing-btn" onclick="setSpacing(35)" data-val="35">35 cm</button>
-          <button type="button" class="preset-btn spacing-btn active" onclick="setSpacing(50)" data-val="50">50 cm</button>
+          <button type="button" class="preset-btn spacing-btn active" onclick="setSpacing(50)" data-val="50">50
+            cm</button>
         </div>
         <div class="flex-row" style="align-items: center; gap: 8px;">
           <input type="range" id="rngSpacing" min="30" max="100" step="1" value="50" style="flex: 2;">
@@ -354,9 +705,12 @@
         <label>Densidade da Calda (kg/L)</label>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <button type="button" class="preset-btn active" onclick="setDensity(1.00)" data-val="1">Água (1.0)</button>
-          <button type="button" class="preset-btn" onclick="setDensity(1.08)" data-val="1.08" title="Fungicida + Óleo">Média (1.08)</button>
-          <button type="button" class="preset-btn" onclick="setDensity(1.20)" data-val="1.2" title="Nutrição Foliar">Pesada (1.20)</button>
-          <input type="number" id="numDensity" value="1.00" step="0.01" min="0.8" max="1.5" style="flex: 1; min-width: 80px;">
+          <button type="button" class="preset-btn" onclick="setDensity(1.08)" data-val="1.08"
+            title="Fungicida + Óleo">Média (1.08)</button>
+          <button type="button" class="preset-btn" onclick="setDensity(1.20)" data-val="1.2"
+            title="Nutrição Foliar">Pesada (1.20)</button>
+          <input type="number" id="numDensity" value="1.00" step="0.01" min="0.8" max="1.5"
+            style="flex: 1; min-width: 80px;">
         </div>
       </div>
 
@@ -404,12 +758,14 @@
       <div class="glass-panel" style="display:flex; flex-direction:column; gap:16px;">
         <div>
           <h2 style="font-size: 22px; display:flex; justify-content:space-between; align-items:center;">
-             Top Recomendados
-             <span id="matchCount" style="font-size:14px; color:var(--text-muted); font-family:Inter; font-weight:400;">Buscando...</span>
+            Top Recomendados
+            <span id="matchCount"
+              style="font-size:14px; color:var(--text-muted); font-family:Inter; font-weight:400;">Buscando...</span>
           </h2>
-          <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Bicos que operam dentro da pressão ideal de forma segura para a faixa de velocidade.</p>
+          <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Bicos que operam dentro da pressão ideal
+            de forma segura para a faixa de velocidade.</p>
         </div>
-        
+
         <div id="topCards" class="recommended-grid">
           <!-- Cards injetados via JS -->
         </div>
@@ -436,204 +792,218 @@
   <!-- Help Modal Overlay -->
   <div id="helpModal" class="modal-overlay" onclick="if(event.target === this) this.style.display='none'">
     <div class="modal-content">
-      <button class="close-btn" onclick="document.getElementById('helpModal').style.display='none'" title="Fechar">&times;</button>
+      <button class="close-btn" onclick="document.getElementById('helpModal').style.display='none'"
+        title="Fechar">&times;</button>
       <h2>📖 Sobre o Spray Precision PRO</h2>
-      <p>Este aplicativo é um <strong>Simulador Agronômico de Alta Fidelidade</strong> desenvolvido para auxiliar profissionais na recomendação exata da ponta hidráulica (bico de pulverização) compatível com o padrão de cores ISO.</p>
-      
+      <p>Este aplicativo é um <strong>Simulador Agronômico de Alta Fidelidade</strong> desenvolvido para auxiliar
+        profissionais na recomendação exata da ponta hidráulica (bico de pulverização) compatível com o padrão de cores
+        ISO.</p>
+
       <h3>🎯 O que ele faz?</h3>
       <ul>
-        <li>Gera automaticamente a janela de velocidades seguras de cada bico para evitar perdas ou derivas na sua barra.</li>
-        <li>Identifica matematicamente qual bico atingirá a Vazão Desejada (L/ha) sendo exigido apenas pela <b>Pressão Segura</b> da bomba.</li>
+        <li>Gera automaticamente a janela de velocidades seguras de cada bico para evitar perdas ou derivas na sua
+          barra.</li>
+        <li>Identifica matematicamente qual bico atingirá a Vazão Desejada (L/ha) sendo exigido apenas pela <b>Pressão
+            Segura</b> da bomba.</li>
       </ul>
 
       <h3>⚖️ Inovação Técnica: Densidade da Calda</h3>
-      <p>Calculadoras teóricas pressupõem que você aplicará água pura, resultando em recomendações irrealistas na prática do defensivo. Aqui utilizamos <strong>Correção de Gravidade Específica</strong>.</p>
+      <p>Calculadoras teóricas pressupõem que você aplicará água pura, resultando em recomendações irrealistas na
+        prática do defensivo. Aqui utilizamos <strong>Correção de Gravidade Específica</strong>.</p>
       <ul>
         <li><strong>Água:</strong> Selecione o peso base 1.00 kg/L.</li>
-        <li><strong>Misturas Fortes / Óleos Minerais:</strong> Utilize o atalho Média (1.08 kg/L). Compensa a perda de fluxo exigida pela formulação SC / CE espessa.</li>
-        <li><strong>Adubação Líquida / Nutrição Foliar:</strong> Caldas densas "xaroposas" travam o fluxo de L/min original do bico; use o atalho Pesada (1.20+ kg/L).</li>
+        <li><strong>Misturas Fortes / Óleos Minerais:</strong> Utilize o atalho Média (1.08 kg/L). Compensa a perda de
+          fluxo exigida pela formulação SC / CE espessa.</li>
+        <li><strong>Adubação Líquida / Nutrição Foliar:</strong> Caldas densas "xaroposas" travam o fluxo de L/min
+          original do bico; use o atalho Pesada (1.20+ kg/L).</li>
       </ul>
-      <p style="margin-top: 8px;"><em>O simulador fará a extração da raiz quadrada da densidade "escondido", penalizando ou aliviando os bicos teóricos para entregar a resposta real do cenário de campo ao limitador do manômetro.</em></p>
+      <p style="margin-top: 8px;"><em>O simulador fará a extração da raiz quadrada da densidade "escondido", penalizando
+          ou aliviando os bicos teóricos para entregar a resposta real do cenário de campo ao limitador do
+          manômetro.</em></p>
 
       <h3>💡 Módulo de Extremo Operacional (Falha Segura)</h3>
-      <p>Caso você force os parâmetros (ex: 300 L/ha) numa velocidade fora de série onde absolutamente nenhum bico na vitrine conseguiria atuar usando uma pressão segura, o sistema ativará o protocolo de emergência.<br><br>Ele não esconde os resultados, mas sim pesquisa no catálogo a <b>"MELHOR ALTERNATIVA"</b> com uma etiqueta amarela de aviso, mostrando a única opção viável (a matematicamente mais próxima de oscilar em torno da calibração de fábrica ISO Padrão de 3 bar).</p>
+      <p>Caso você force os parâmetros (ex: 300 L/ha) numa velocidade fora de série onde absolutamente nenhum bico na
+        vitrine conseguiria atuar usando uma pressão segura, o sistema ativará o protocolo de emergência.<br><br>Ele não
+        esconde os resultados, mas sim pesquisa no catálogo a <b>"MELHOR ALTERNATIVA"</b> com uma etiqueta amarela de
+        aviso, mostrando a única opção viável (a matematicamente mais próxima de oscilar em torno da calibração de
+        fábrica ISO Padrão de 3 bar).</p>
     </div>
   </div>
 
-<script>
-  // Vazão em L/min (q3) é calculada na norma como: {tamanho do bico em GPM} * 3.785 (fator Galão p/ Litro)
-  const NOZZLES = [
-    { iso:"01",   size: 0.1,   color:"#F28C28" }, // Laranja
-    { iso:"0134", size: 0.134, color:"#795548" }, // Marrom
-    { iso:"015",  size: 0.15,  color:"#4CAF50" }, // Verde
-    { iso:"0175", size: 0.175, color:"#9E9E9E" }, // Cinza
-    { iso:"02",   size: 0.2,   color:"#FFEB3B" }, // Amarelo
-    { iso:"025",  size: 0.25,  color:"#9C27B0" }, // Lilás
-    { iso:"03",   size: 0.3,   color:"#2196F3" }, // Azul
-    { iso:"04",   size: 0.4,   color:"#F44336" }, // Vermelho
-    { iso:"05",   size: 0.5,   color:"#A1887F" }, // Marrom Claro
-    { iso:"06",   size: 0.6,   color:"#BDBDBD" }, // Cinza Prata
-    { iso:"08",   size: 0.8,   color:"#FFFFFF" }  // Branco
-  ].map(n => ({ iso: n.iso, color: n.color, q3: n.size * 3.785 }));
+  <script>
+    // Vazão em L/min (q3) é calculada na norma como: {tamanho do bico em GPM} * 3.785 (fator Galão p/ Litro)
+    const NOZZLES = [
+      { iso: "01", size: 0.1, color: "#F28C28" }, // Laranja
+      { iso: "0134", size: 0.134, color: "#795548" }, // Marrom
+      { iso: "015", size: 0.15, color: "#4CAF50" }, // Verde
+      { iso: "0175", size: 0.175, color: "#9E9E9E" }, // Cinza
+      { iso: "02", size: 0.2, color: "#FFEB3B" }, // Amarelo
+      { iso: "025", size: 0.25, color: "#9C27B0" }, // Lilás
+      { iso: "03", size: 0.3, color: "#2196F3" }, // Azul
+      { iso: "04", size: 0.4, color: "#F44336" }, // Vermelho
+      { iso: "05", size: 0.5, color: "#A1887F" }, // Marrom Claro
+      { iso: "06", size: 0.6, color: "#BDBDBD" }, // Cinza Prata
+      { iso: "08", size: 0.8, color: "#FFFFFF" }  // Branco
+    ].map(n => ({ iso: n.iso, color: n.color, q3: n.size * 3.785 }));
 
-  let PRESS_UNIT = 'bar';
-  const BAR_TO_PSI = 14.5038;
-  const P_REF_BAR = 3.0;
-  
-  // Elementos
-  const rngSpacing = document.getElementById('rngSpacing');
-  const numSpacing = document.getElementById('numSpacing');
-  const rngRate = document.getElementById('rngRate');
-  const numRate = document.getElementById('numRate');
-  const numDensity = document.getElementById('numDensity');
-  
-  const numPMin = document.getElementById('numPMin');
-  const numPMax = document.getElementById('numPMax');
-  const numVMin = document.getElementById('numVMin');
-  const numVAvg = document.getElementById('numVAvg');
-  const numVMax = document.getElementById('numVMax');
+    let PRESS_UNIT = 'bar';
+    const BAR_TO_PSI = 14.5038;
+    const P_REF_BAR = 3.0;
 
-  // Chart
-  let myChart = null;
+    // Elementos
+    const rngSpacing = document.getElementById('rngSpacing');
+    const numSpacing = document.getElementById('numSpacing');
+    const rngRate = document.getElementById('rngRate');
+    const numRate = document.getElementById('numRate');
+    const numDensity = document.getElementById('numDensity');
 
-  function initChart() {
-    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-    Chart.defaults.color = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)";
-    Chart.defaults.font.family = "Inter";
-    
-    const ctx = document.getElementById('mainChart').getContext('2d');
-    myChart = new Chart(ctx, {
-      type: 'bar',
-      data: { labels: [], datasets: [] },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        indexAxis: 'y',
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: 'rgba(10,15,20,0.9)',
-            titleFont: { family: 'Outfit', size: 16 },
-            bodyFont: { size: 14 },
-            padding: 12,
-            borderColor: 'rgba(255,255,255,0.1)',
-            borderWidth: 1,
-            callbacks: {
-              label: (ctx) => {
-                if (ctx.dataset.type === 'scatter') {
+    const numPMin = document.getElementById('numPMin');
+    const numPMax = document.getElementById('numPMax');
+    const numVMin = document.getElementById('numVMin');
+    const numVAvg = document.getElementById('numVAvg');
+    const numVMax = document.getElementById('numVMax');
+
+    // Chart
+    let myChart = null;
+
+    function initChart() {
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      Chart.defaults.color = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)";
+      Chart.defaults.font.family = "Inter";
+
+      const ctx = document.getElementById('mainChart').getContext('2d');
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(10,15,20,0.9)',
+              titleFont: { family: 'Outfit', size: 16 },
+              bodyFont: { size: 14 },
+              padding: 12,
+              borderColor: 'rgba(255,255,255,0.1)',
+              borderWidth: 1,
+              callbacks: {
+                label: (ctx) => {
+                  if (ctx.dataset.type === 'scatter') {
                     return `3 bar (ISO Padrão): ${ctx.raw.x.toFixed(1)} km/h`;
+                  }
+                  const r = ctx.raw;
+                  return [
+                    `Janela: ${r.min.toFixed(1)} a ${r.max.toFixed(1)} km/h`,
+                    `Intervalo ${PRESS_UNIT.toUpperCase()}: ${document.getElementById('numPMin').value} a ${document.getElementById('numPMax').value}`
+                  ];
                 }
-                const r = ctx.raw;
-                return [
-                  `Janela: ${r.min.toFixed(1)} a ${r.max.toFixed(1)} km/h`,
-                  `Intervalo ${PRESS_UNIT.toUpperCase()}: ${document.getElementById('numPMin').value} a ${document.getElementById('numPMax').value}`
-                ];
               }
             }
-          }
-        },
-        scales: {
-          x: { 
-            grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)' },
-            title: { display: true, text: 'Velocidade (km/h)', color: isDark ? '#fff' : '#0f172a' },
-            ticks: { color: isDark ? 'rgba(255,255,255,0.7)' : '#0f172a' }
           },
-          y: { 
-            grid: { display: false },
-            ticks: { font: { family: 'Outfit', weight: 'bold', size: 14 }, color: isDark ? 'rgba(255,255,255,0.7)' : '#0f172a' }
+          scales: {
+            x: {
+              grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)' },
+              title: { display: true, text: 'Velocidade (km/h)', color: isDark ? '#fff' : '#0f172a' },
+              ticks: { color: isDark ? 'rgba(255,255,255,0.7)' : '#0f172a' }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { font: { family: 'Outfit', weight: 'bold', size: 14 }, color: isDark ? 'rgba(255,255,255,0.7)' : '#0f172a' }
+            }
           }
         }
-      }
-    });
-  }
-
-  function setUnit(u) {
-    if(PRESS_UNIT === u) return;
-    
-    let oldMin = parseFloat(numPMin.value);
-    let oldMax = parseFloat(numPMax.value);
-
-    PRESS_UNIT = u;
-    document.getElementById('btnBar').classList.toggle('active', u==='bar');
-    document.getElementById('btnPsi').classList.toggle('active', u==='psi');
-
-    if(u === 'psi') {
-      numPMin.value = (oldMin * BAR_TO_PSI).toFixed(1);
-      numPMax.value = (oldMax * BAR_TO_PSI).toFixed(1);
-    } else {
-      numPMin.value = (oldMin / BAR_TO_PSI).toFixed(1);
-      numPMax.value = (oldMax / BAR_TO_PSI).toFixed(1);
+      });
     }
-    update();
-  }
 
-  function setSpacing(v) {
+    function setUnit(u) {
+      if (PRESS_UNIT === u) return;
+
+      let oldMin = parseFloat(numPMin.value);
+      let oldMax = parseFloat(numPMax.value);
+
+      PRESS_UNIT = u;
+      document.getElementById('btnBar').classList.toggle('active', u === 'bar');
+      document.getElementById('btnPsi').classList.toggle('active', u === 'psi');
+
+      if (u === 'psi') {
+        numPMin.value = (oldMin * BAR_TO_PSI).toFixed(1);
+        numPMax.value = (oldMax * BAR_TO_PSI).toFixed(1);
+      } else {
+        numPMin.value = (oldMin / BAR_TO_PSI).toFixed(1);
+        numPMax.value = (oldMax / BAR_TO_PSI).toFixed(1);
+      }
+      update();
+    }
+
+    function setSpacing(v) {
       document.getElementById('numSpacing').value = v;
       document.getElementById('rngSpacing').value = v;
       updateSpacingButtons();
       update();
-  }
+    }
 
-  function updateSpacingButtons() {
+    function updateSpacingButtons() {
       const v = parseFloat(document.getElementById('numSpacing').value);
       document.querySelectorAll('.spacing-btn').forEach(b => {
-          if (parseFloat(b.getAttribute('data-val')) === v) {
-              b.classList.add('active');
-          } else {
-              b.classList.remove('active');
-          }
+        if (parseFloat(b.getAttribute('data-val')) === v) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
       });
-  }
+    }
 
-  function setDensity(v) {
+    function setDensity(v) {
       document.getElementById('numDensity').value = v.toFixed(2);
       updatePresetButtons();
       update();
-  }
+    }
 
-  function updatePresetButtons() {
+    function updatePresetButtons() {
       const d = parseFloat(document.getElementById('numDensity').value);
       document.querySelectorAll('.preset-btn').forEach(b => {
-          if (parseFloat(b.getAttribute('data-val')) === d) {
-              b.classList.add('active');
-          } else {
-              b.classList.remove('active');
-          }
+        if (parseFloat(b.getAttribute('data-val')) === d) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
       });
-  }
+    }
 
-  function pRef() { return PRESS_UNIT === 'bar' ? P_REF_BAR : (P_REF_BAR * BAR_TO_PSI); }
-  function qPorBico(rate, vel, spacM) { return (rate * vel * spacM) / 600.0; }
-  function pressaoNec(qMix, q3, dens) { const qWaterEq = qMix * Math.sqrt(dens); return pRef() * Math.pow(qWaterEq / q3, 2); }
-  function velPara(rate, spacM, q) { return (q * 600.0) / (rate * spacM); }
+    function pRef() { return PRESS_UNIT === 'bar' ? P_REF_BAR : (P_REF_BAR * BAR_TO_PSI); }
+    function qPorBico(rate, vel, spacM) { return (rate * vel * spacM) / 600.0; }
+    function pressaoNec(qMix, q3, dens) { const qWaterEq = qMix * Math.sqrt(dens); return pRef() * Math.pow(qWaterEq / q3, 2); }
+    function velPara(rate, spacM, q) { return (q * 600.0) / (rate * spacM); }
 
-  function update() {
-    const spacingM = parseFloat(numSpacing.value) / 100.0;
-    const rate = parseFloat(numRate.value);
-    const pMin = parseFloat(numPMin.value) || 0.1;
-    const pMax = parseFloat(numPMax.value) || 10.0;
-    const density = parseFloat(numDensity.value) || 1.0;
-    
-    const vMin = parseFloat(numVMin.value) || 0;
-    const vAvg = parseFloat(numVAvg.value) || 0;
-    const vMax = parseFloat(numVMax.value) || 0;
-    
-    const maxLimitsValid = pMax > pMin && rate > 0 && spacingM > 0;
-    if(!maxLimitsValid) return;
+    function update() {
+      const spacingM = parseFloat(numSpacing.value) / 100.0;
+      const rate = parseFloat(numRate.value);
+      const pMin = parseFloat(numPMin.value) || 0.1;
+      const pMax = parseFloat(numPMax.value) || 10.0;
+      const density = parseFloat(numDensity.value) || 1.0;
 
-    let rows = [];
-    
-    NOZZLES.forEach(nz => {
+      const vMin = parseFloat(numVMin.value) || 0;
+      const vAvg = parseFloat(numVAvg.value) || 0;
+      const vMax = parseFloat(numVMax.value) || 0;
+
+      const maxLimitsValid = pMax > pMin && rate > 0 && spacingM > 0;
+      if (!maxLimitsValid) return;
+
+      let rows = [];
+
+      NOZZLES.forEach(nz => {
         // Vazão de água pura correspondente aos limites de pressão
         const qAtPmin_water = nz.q3 * Math.sqrt(pMin / pRef());
         const qAtPmax_water = nz.q3 * Math.sqrt(pMax / pRef());
-        
+
         // Fator de conversão da calda
         const qAtPmin_mix = qAtPmin_water / Math.sqrt(density);
         const qAtPmax_mix = qAtPmax_water / Math.sqrt(density);
-        
+
         const vAtPmin = velPara(rate, spacingM, qAtPmin_mix);
         const vAtPmax = velPara(rate, spacingM, qAtPmax_mix);
-        
+
         const qAt3Bar_mix = nz.q3 / Math.sqrt(density);
         const vAt3Bar = velPara(rate, spacingM, qAt3Bar_mix);
 
@@ -645,57 +1015,57 @@
         const qVmax = qPorBico(rate, vMax, spacingM);
         const pVmax = pressaoNec(qVmax, nz.q3, density);
 
-        const ok = (pVmin >= pMin && pVmax <= pMax && vMin>0 && vMax>0 && pVmin <= pVmax);
+        const ok = (pVmin >= pMin && pVmax <= pMax && vMin > 0 && vMax > 0 && pVmin <= pVmax);
 
         rows.push({
-            nz: nz,
-            vAtPmin, vAtPmax, vAt3Bar,
-            pVavg, ok,
-            pressures: [pVmin, pVavg, pVmax]
+          nz: nz,
+          vAtPmin, vAtPmax, vAt3Bar,
+          pVavg, ok,
+          pressures: [pVmin, pVavg, pVmax]
         });
-    });
+      });
 
-    // Sort by recommended, then closest to ref pressure (3bar or 43.5psi)
-    rows.sort((a,b) => {
-        if(a.ok !== b.ok) return a.ok ? -1 : 1;
+      // Sort by recommended, then closest to ref pressure (3bar or 43.5psi)
+      rows.sort((a, b) => {
+        if (a.ok !== b.ok) return a.ok ? -1 : 1;
         return Math.abs(a.pVavg - pRef()) - Math.abs(b.pVavg - pRef());
-    });
+      });
 
-    renderCards(rows, pMin, pMax, vMin, vMax);
-    updateChart(rows, vMin, vMax);
-    renderTable(rows, vMin, vAvg, vMax);
-  }
+      renderCards(rows, pMin, pMax, vMin, vMax);
+      updateChart(rows, vMin, vMax);
+      renderTable(rows, vMin, vAvg, vMax);
+    }
 
-  function renderCards(rows, pMin, pMax, vMin, vMax) {
+    function renderCards(rows, pMin, pMax, vMin, vMax) {
       const container = document.getElementById('topCards');
       let tops = rows.filter(r => r.ok);
-      
+
       let fallbackMode = false;
       if (tops.length === 0 && rows.length > 0) {
-          fallbackMode = true;
-          tops = [rows[0]]; // O bico matematicamente mais proximo da pressao de referencia (3bar)
+        fallbackMode = true;
+        tops = [rows[0]]; // O bico matematicamente mais proximo da pressao de referencia (3bar)
       }
 
       document.getElementById('matchCount').innerText = fallbackMode ? '1 alternativa com ressalvas' : `${tops.length} encontrados`;
 
       container.innerHTML = '';
       if (fallbackMode) {
-          container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; padding: 16px; border: 1px dashed var(--accent-error); border-radius: 12px; background: rgba(255,0,0,0.02); display: flex; flex-direction: column; gap: 8px;">
+        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; padding: 16px; border: 1px dashed var(--accent-error); border-radius: 12px; background: rgba(255,0,0,0.02); display: flex; flex-direction: column; gap: 8px;">
               <span style="font-size:24px;">⚠️ Extremo Operacional</span>
               <p style="color: var(--text-main); font-size: 14px;"><strong>Nenhum bico atende a faixa de velocidade nesses limites de pressão.</strong></p>
               <p style="color: var(--text-muted); font-size: 13px;">O bico ISO abaixo é a opção mais próxima do ponto ideal, mas operará forçando os limites (risco de falha no leque ou alta deriva).</p>
           </div>`;
-          tops.forEach(r => container.appendChild(createCard(r, 'warning', "MELHOR ALTERNATIVA")));
+        tops.forEach(r => container.appendChild(createCard(r, 'warning', "MELHOR ALTERNATIVA")));
       } else {
-          tops.slice(0,4).forEach(r => container.appendChild(createCard(r, 'ok', "RECOMENDADO")));
+        tops.slice(0, 4).forEach(r => container.appendChild(createCard(r, 'ok', "RECOMENDADO")));
       }
-  }
+    }
 
-  function createCard(r, statusType, customText) {
+    function createCard(r, statusType, customText) {
       const div = document.createElement('div');
       div.className = 'nozzle-card';
       div.style.setProperty('--nz-color', r.nz.color);
-      
+
       const pUnit = PRESS_UNIT.toUpperCase();
       const avgStr = isNaN(r.pVavg) ? '--' : r.pVavg.toFixed(1);
 
@@ -719,14 +1089,14 @@
         </div>
       `;
       return div;
-  }
+    }
 
-  function renderTable(rows, vMin, vAvg, vMax) {
+    function renderTable(rows, vMin, vAvg, vMax) {
       const tbody = document.getElementById('dataTable');
       const pUnit = PRESS_UNIT.toUpperCase();
       const sysPMin = parseFloat(numPMin.value);
       const sysPMax = parseFloat(numPMax.value);
-      
+
       let html = `<thead>
         <tr>
           <th style="text-align:left">ISO</th>
@@ -740,13 +1110,13 @@
       </thead><tbody>`;
 
       rows.forEach(r => {
-          const makeCell = (lbl, p) => {
-              const cls = (p >= sysPMin && p <= sysPMax && p > 0) ? 'ok' : 'bad';
-              const color = cls === 'ok' ? 'var(--accent-green)' : 'var(--accent-error)';
-              return `<td data-label="${lbl}" style="color:${color}; font-family: Outfit; font-weight: 600;">${isNaN(p)||!isFinite(p)?'--':p.toFixed(1)} ${pUnit}</td>`;
-          };
-          
-          html += `<tr>
+        const makeCell = (lbl, p) => {
+          const cls = (p >= sysPMin && p <= sysPMax && p > 0) ? 'ok' : 'bad';
+          const color = cls === 'ok' ? 'var(--accent-green)' : 'var(--accent-error)';
+          return `<td data-label="${lbl}" style="color:${color}; font-family: Outfit; font-weight: 600;">${isNaN(p) || !isFinite(p) ? '--' : p.toFixed(1)} ${pUnit}</td>`;
+        };
+
+        html += `<tr>
             <td data-label="Bico ISO" style="text-align:left; font-weight:bold; color:${r.nz.color}">ISO ${r.nz.iso}</td>
             <td data-label="Q@3bar" style="font-family: Outfit; color:var(--text-muted)">${r.nz.q3.toFixed(2)}</td>
             ${makeCell("Pressão V. Mín", r.pressures[0])}
@@ -758,33 +1128,33 @@
       });
       html += `</tbody>`;
       tbody.innerHTML = html;
-  }
+    }
 
-  function updateChart(rows, sysVMin, sysVMax) {
-      if(!myChart) return;
-      
+    function updateChart(rows, sysVMin, sysVMax) {
+      if (!myChart) return;
+
       // Limita a exibição do gráfico para focar nas velocidades práticas
       myChart.options.scales.x.min = Math.max(0, sysVMin - 5);
       myChart.options.scales.x.max = sysVMax + 10;
 
       const labels = rows.map(r => `ISO ${r.nz.iso}`);
-      
+
       const barData = rows.map(r => {
-          return {
-              x: [r.vAtPmin, r.vAtPmax], // [min_val, max_val] interval 
-              y: `ISO ${r.nz.iso}`,
-              min: r.vAtPmin,
-              max: r.vAtPmax,
-              color: r.nz.color,
-              ok: r.ok
-          }
+        return {
+          x: [r.vAtPmin, r.vAtPmax], // [min_val, max_val] interval 
+          y: `ISO ${r.nz.iso}`,
+          min: r.vAtPmin,
+          max: r.vAtPmax,
+          color: r.nz.color,
+          ok: r.ok
+        }
       });
 
       const scatterData = rows.map(r => {
-          return {
-              x: r.vAt3Bar,
-              y: `ISO ${r.nz.iso}`
-          }
+        return {
+          x: r.vAt3Bar,
+          y: `ISO ${r.nz.iso}`
+        }
       });
 
       myChart.data.labels = labels;
@@ -813,61 +1183,62 @@
           pointHoverRadius: 8
         }
       ];
-      
+
       // Annotations for real speeds
       myChart.options.plugins.annotation = {
-         annotations: {
-             line1: { type: 'line', xMin: sysVMin, xMax: sysVMin, borderColor: 'rgba(255, 255, 255, 0.4)', borderDash: [5, 5] },
-             line2: { type: 'line', xMin: sysVMax, xMax: sysVMax, borderColor: 'rgba(255, 255, 255, 0.4)', borderDash: [5, 5] }
-         }
+        annotations: {
+          line1: { type: 'line', xMin: sysVMin, xMax: sysVMin, borderColor: 'rgba(255, 255, 255, 0.4)', borderDash: [5, 5] },
+          line2: { type: 'line', xMin: sysVMax, xMax: sysVMax, borderColor: 'rgba(255, 255, 255, 0.4)', borderDash: [5, 5] }
+        }
       };
 
       myChart.update();
-  }
+    }
 
-  // Event Listeners
-  rngSpacing.addEventListener('input', (e) => { numSpacing.value = e.target.value; updateSpacingButtons(); update(); });
-  numSpacing.addEventListener('input', (e) => { rngSpacing.value = e.target.value; updateSpacingButtons(); update(); });
-  rngRate.addEventListener('input', (e) => { numRate.value = e.target.value; update(); });
-  numRate.addEventListener('input', (e) => { rngRate.value = e.target.value; update(); });
+    // Event Listeners
+    rngSpacing.addEventListener('input', (e) => { numSpacing.value = e.target.value; updateSpacingButtons(); update(); });
+    numSpacing.addEventListener('input', (e) => { rngSpacing.value = e.target.value; updateSpacingButtons(); update(); });
+    rngRate.addEventListener('input', (e) => { numRate.value = e.target.value; update(); });
+    numRate.addEventListener('input', (e) => { rngRate.value = e.target.value; update(); });
 
-  [numPMin, numPMax, numVMin, numVAvg, numVMax].forEach(el => {
+    [numPMin, numPMax, numVMin, numVAvg, numVMax].forEach(el => {
       el.addEventListener('input', update);
-  });
-  numDensity.addEventListener('input', () => { updatePresetButtons(); update(); });
+    });
+    numDensity.addEventListener('input', () => { updatePresetButtons(); update(); });
 
-  let currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-  document.documentElement.setAttribute('data-theme', currentTheme);
+    let currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', currentTheme);
 
-  function toggleTheme() {
+    function toggleTheme() {
       currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', currentTheme);
       localStorage.setItem('theme', currentTheme);
-      if(myChart) {
-          const isDark = currentTheme === 'dark';
-          Chart.defaults.color = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)";
-          myChart.options.scales.x.grid.color = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)';
-          myChart.options.scales.x.title.color = isDark ? '#fff' : '#0f172a';
-          myChart.options.scales.x.ticks = myChart.options.scales.x.ticks || {};
-          myChart.options.scales.x.ticks.color = isDark ? 'rgba(255,255,255,0.7)' : '#0f172a';
-          myChart.options.scales.y.ticks = myChart.options.scales.y.ticks || {};
-          myChart.options.scales.y.ticks.color = isDark ? 'rgba(255,255,255,0.7)' : '#0f172a';
-          myChart.options.plugins.tooltip.backgroundColor = isDark ? 'rgba(10,15,20,0.9)' : 'rgba(255,255,255,0.9)';
-          myChart.options.plugins.tooltip.titleColor = isDark ? '#fff' : '#0f172a';
-          myChart.options.plugins.tooltip.bodyColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
-          myChart.options.plugins.tooltip.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-          myChart.update();
+      if (myChart) {
+        const isDark = currentTheme === 'dark';
+        Chart.defaults.color = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)";
+        myChart.options.scales.x.grid.color = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)';
+        myChart.options.scales.x.title.color = isDark ? '#fff' : '#0f172a';
+        myChart.options.scales.x.ticks = myChart.options.scales.x.ticks || {};
+        myChart.options.scales.x.ticks.color = isDark ? 'rgba(255,255,255,0.7)' : '#0f172a';
+        myChart.options.scales.y.ticks = myChart.options.scales.y.ticks || {};
+        myChart.options.scales.y.ticks.color = isDark ? 'rgba(255,255,255,0.7)' : '#0f172a';
+        myChart.options.plugins.tooltip.backgroundColor = isDark ? 'rgba(10,15,20,0.9)' : 'rgba(255,255,255,0.9)';
+        myChart.options.plugins.tooltip.titleColor = isDark ? '#fff' : '#0f172a';
+        myChart.options.plugins.tooltip.bodyColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
+        myChart.options.plugins.tooltip.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+        myChart.update();
       }
-  }
+    }
 
-  // Init
-  window.addEventListener('load', () => {
-    initChart();
-    updateSpacingButtons();
-    updatePresetButtons();
-    update();
-  });
+    // Init
+    window.addEventListener('load', () => {
+      initChart();
+      updateSpacingButtons();
+      updatePresetButtons();
+      update();
+    });
 
-</script>
+  </script>
 </body>
+
 </html>
