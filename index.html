@@ -1,604 +1,640 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Spray Precision — Seletor técnico de bico de pulverização</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spray Precision PRO</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-dark: #0a0f12;
+      --glass-bg: rgba(20, 25, 30, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --accent: #00d2ff;
+      --accent-glow: rgba(0, 210, 255, 0.4);
+      --accent-green: #38ef7d;
+      --accent-error: #ff4b4b;
+      --text-main: #f0f4f8;
+      --text-muted: #94a3b8;
+      --card-radius: 20px;
+      --shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
 
-<style>
-  :root{
-    font-family: Arial, Helvetica, sans-serif;
-    --bg:#f4f6f8;
-    --card:#fff;
-    --border:#cfd6df;
-    --muted:#666;
-    --shadow: 0 8px 24px rgba(0,0,0,.08);
-    --radius:14px;
-  }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark) url('bg_premium.png') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
 
-  body{margin:0;background:var(--bg);padding:14px;}
-  .wrap{max-width:1150px;margin:0 auto;}
-  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;}
-  h1{margin:0 0 8px;font-size:20px;line-height:1.15;}
-  p{margin:6px 0 12px;color:#444;line-height:1.35;}
-  .muted{color:var(--muted);font-size:13px;}
-  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono";}
+    /* Ambient Overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(10,15,18,0.85) 0%, rgba(10,15,18,0.5) 100%);
+      z-index: -1;
+    }
 
-  /* ✅ MOBILE-FIRST GRID: 1 coluna no celular */
-  .grid{display:grid;grid-template-columns:1fr;gap:12px;}
-  .field{grid-column:auto;}
-  .field.w6{grid-column:auto;}
+    h1, h2, h3 { font-family: 'Outfit', sans-serif; }
 
-  label{display:block;font-weight:800;margin-bottom:6px;font-size:14px;}
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 10px;
+    }
+    
+    @media (min-width: 900px) {
+      .container { grid-template-columns: 350px 1fr; }
+    }
 
-  input{
-    width:100%;
-    padding:12px 12px;
-    border:1px solid var(--border);
-    border-radius:12px;
-    font-size:16px; /* ✅ evita zoom do iOS */
-    box-sizing:border-box;
-  }
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--card-radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
 
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    /* Header */
+    .header {
+      width: 100%;
+      max-width: 1280px;
+      text-align: left;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-green));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; color: #000; box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .header h1 {
+      font-size: 32px; font-weight: 800; letter-spacing: -0.5px;
+      background: linear-gradient(to right, #fff, #b0c4de);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
 
-  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
-  button{
-    border:0;border-radius:12px;
-    padding:12px 14px;
-    font-weight:900;
-    cursor:pointer;
-    background:#111;color:#fff;
-    font-size:15px;
-    min-height:44px; /* ✅ touch */
-  }
-  button.secondary{background:#e9ecf2;color:#111;}
+    /* Controls Panel */
+    .controls { display: flex; flex-direction: column; gap: 20px; }
+    
+    .control-group { display: flex; flex-direction: column; gap: 8px; }
+    .control-group label {
+      font-weight: 600; font-size: 13px; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between;
+    }
+    .val-display { color: var(--accent); font-weight: 700; font-family: 'Outfit'; font-size: 15px; }
 
-  .segbtn{background:#e9ecf2;color:#111;}
-  .segbtn.active{background:#111;color:#fff;}
-  .segbtn{min-height:44px;padding:10px 14px;border-radius:999px;}
+    /* Custom Sliders */
+    input[type=range] {
+      -webkit-appearance: none; width: 100%; background: transparent; height: 24px;
+    }
+    input[type=range]:focus { outline: none; }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%; height: 6px; cursor: pointer;
+      background: rgba(255,255,255,0.1); border-radius: 3px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      height: 20px; width: 20px; border-radius: 50%;
+      background: var(--accent); cursor: pointer;
+      -webkit-appearance: none; margin-top: -7px;
+      box-shadow: 0 0 10px var(--accent-glow); transition: 0.2s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+    
+    .unit-toggle {
+      display: flex; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;
+      border: 1px solid var(--glass-border); padding: 4px; gap: 4px;
+    }
+    .unit-toggle button {
+      flex: 1; border: none; background: transparent; color: var(--text-muted); padding: 8px;
+      border-radius: 6px; font-weight: 600; cursor: pointer; font-family: 'Inter'; transition: 0.3s;
+    }
+    .unit-toggle button.active {
+      background: var(--text-main); color: var(--bg-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
 
-  .note{
-    background:#fff7d6;border:1px solid #ffeaa1;
-    padding:12px 12px;border-radius:14px;color:#333;margin-top:12px;
-  }
+    .flex-row { display: flex; gap: 12px; }
+    .flex-row > div { flex: 1; }
+    
+    /* Number Inputs */
+    input[type=number] {
+      width: 100%; padding: 12px; border-radius: 8px;
+      background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+      color: #fff; font-family: 'Outfit'; font-size: 16px; font-weight: 600;
+      text-align: center; transition: 0.3s;
+    }
+    input[type=number]:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 10px var(--accent-glow); }
 
-  /* ✅ tabela scrollável no celular */
-  .tableWrap{
-    margin-top:14px;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    border-radius:14px;
-    border:1px solid #eef1f6;
-  }
-  table{width:100%;border-collapse:collapse;min-width:820px;}
-  th,td{padding:10px;border-bottom:1px solid #eef1f6;font-size:14px;text-align:center;white-space:nowrap;}
-  th{background:#f2f4f8;position:sticky;top:0;z-index:1;}
-  td.left,th.left{text-align:left;white-space:normal;}
-  .tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:900;}
-  .ok{background:#e7f8ee;color:#146c2e;}
-  .bad{background:#ffe8e8;color:#8b1a1a;}
-  .mid{background:#e9f0ff;color:#1c3f8c;}
+    /* Main Dashboard */
+    .dashboard { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+    
+    .recommended-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;
+    }
 
-  /* ✅ em telas maiores: volta para 12 colunas */
-  @media (min-width: 900px){
-    body{padding:18px;}
-    .card{padding:18px;}
-    h1{font-size:22px;}
-    .grid{grid-template-columns:repeat(12,1fr);}
-    .field{grid-column:span 4;}
-    .field.w6{grid-column:span 6;}
-    input{font-size:14px;}
-  }
+    .nozzle-card {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+      border-radius: 16px; padding: 20px; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+    .nozzle-card:hover { 
+      transform: translateY(-4px); 
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+    .nozzle-card::before {
+      content: ""; position: absolute; top: 0; left: 0; width: 6px; height: 100%;
+      background: var(--nz-color);
+    }
+    .noz-header { display: flex; justify-content: space-between; align-items: center; }
+    .noz-iso { font-family: 'Outfit'; font-weight: 800; font-size: 24px; color: #fff; }
+    .noz-q3 { font-size: 12px; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 12px; }
+    
+    .noz-metrics { display: flex; flex-direction: column; gap: 8px; }
+    .metric-row { display: flex; justify-content: space-between; font-size: 14px; }
+    .metric-label { color: var(--text-muted); }
+    .metric-val { font-weight: 700; color: #fff; font-family: 'Outfit'; }
+    
+    .status-badge {
+      display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-align: center; margin-top: 4px;
+    }
+    .status-badge.ok { background: rgba(56, 239, 125, 0.15); color: var(--accent-green); border: 1px solid rgba(56, 239, 125, 0.3); }
+    .status-badge.bad { background: rgba(255, 75, 75, 0.15); color: var(--accent-error); border: 1px solid rgba(255, 75, 75, 0.3); }
 
-  /* ✅ ajuda no celular: botão calcular ocupa largura */
-  @media (max-width: 520px){
-    .btns button{flex:1;}
-  }
+    .chart-container {
+      position: relative; height: 400px; width: 100%;
+      background: rgba(0,0,0,0.2); border-radius: 16px; padding: 16px; border: 1px solid var(--glass-border);
+    }
 
-  .chartWrap{
-    margin-top:10px;
-    background: var(--card);
-    border:1px solid #eef1f6;
-    border-radius:14px;
-    padding:10px;
-    overflow:hidden;
-    box-shadow: 0 6px 18px rgba(0,0,0,.05);
-  }
-  #chartCanvas{
-    width:100%;
-    height:420px;
-    display:block;
-  }
+    .empty-state {
+      padding: 40px; text-align: center; color: var(--text-muted); font-size: 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
 
-</style>
+    .table-responsive { overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); margin-top: 8px; }
+    .premium-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    .premium-table th, .premium-table td { padding: 12px; text-align: center; border-bottom: 1px solid var(--glass-border); font-size: 14px; }
+    .premium-table th { background: rgba(0,0,0,0.2); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 12px; }
+    .premium-table tbody tr { transition: background 0.2s; }
+    .premium-table tbody tr:hover { background: rgba(255,255,255,0.05); }
+
+  </style>
 </head>
-
 <body>
-<div class="wrap">
-  <div class="card">
 
-    <h1>Spray Precision — Seletor técnico de bico de pulverização</h1>
-
-    <p class="muted" id="formulaText">
-      Q (L/min por bico) = (L/ha × km/h × espaçamento(m)) / 600 ·
-      P (bar) = 3 × (Q / Q@3bar)²
-    </p>
-
-    <div class="grid">
-
-      <div class="field">
-        <label>Espaçamento entre bicos</label>
-        <div class="row" style="margin-bottom:8px;">
-          <button type="button" class="segbtn active" id="btn35" onclick="setSpacing(35)">35 cm</button>
-          <button type="button" class="segbtn" id="btn50" onclick="setSpacing(50)">50 cm</button>
-          <span class="muted">ou ajuste manual:</span>
-        </div>
-        <input id="spacingCm" type="number" step="0.1" value="35" inputmode="decimal" />
-      </div>
-
-      <div class="field">
-        <label>Vazão desejada (L/ha)</label>
-        <input id="rateLha" type="number" step="0.1" value="60" inputmode="decimal" />
-      </div>
-
-      <div class="field">
-        <label>Unidade de pressão</label>
-        <div class="row">
-          <button type="button" class="segbtn active" id="btnBar" onclick="setUnit('bar')">bar</button>
-          <button type="button" class="segbtn" id="btnPsi" onclick="setUnit('psi')">psi</button>
-        </div>
-        <div class="muted" style="margin-top:6px;">
-          Em PSI, o cálculo usa referência ~43,5 psi (equiv. 3 bar).
-        </div>
-      </div>
-
-      <div class="field">
-        <label id="pressureLabel">Faixa de pressão (bar) – mín / máx</label>
-        <div style="display:flex;gap:10px;">
-          <input id="pMin" type="number" step="0.1" value="1.8" inputmode="decimal" />
-          <input id="pMax" type="number" step="0.1" value="5.0" inputmode="decimal" />
-        </div>
-      </div>
-
-      <div class="field w6">
-        <label>Velocidades (km/h) – preencha as 3 para “modo real”</label>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <input id="vMin" type="number" step="0.1" placeholder="V mín (ex: 13)" inputmode="decimal" />
-          <input id="vAvg" type="number" step="0.1" placeholder="V média (ex: 16)" inputmode="decimal" />
-          <input id="vMax" type="number" step="0.1" placeholder="V máx (ex: 18)" inputmode="decimal" />
-        </div>
-        <div class="muted" style="margin-top:6px;">
-          Se qualquer um ficar vazio, usa as velocidades de referência.
-        </div>
-      </div>
-
-      <div class="field w6">
-        <label>Velocidades de referência (km/h)</label>
-        <div style="display:flex;gap:10px;">
-          <input id="ref1" type="number" step="0.1" value="12" inputmode="decimal" />
-          <input id="ref2" type="number" step="0.1" value="16" inputmode="decimal" />
-          <input id="ref3" type="number" step="0.1" value="20" inputmode="decimal" />
-        </div>
-      </div>
-
+  <div class="header">
+    <div class="header-icon">💧</div>
+    <div>
+      <h1>Spray Precision <span style="font-weight:300;">PRO</span></h1>
+      <p>Simulador Interativo de Seleção de Bicos ISO para Aplicação Agrícola</p>
     </div>
-
-    <div class="btns">
-      <button onclick="calcular()">Calcular</button>
-      <button class="secondary" onclick="limparVel()">Limpar velocidades</button>
-    </div>
-
-    <div id="msg" class="note" style="display:none;"></div>
-    <div id="tabela"></div>
-
-
-    <div class="note" style="margin-top:14px;">
-      <b>Gráfico:</b> faixa de velocidade (Pmin–Pmax) • linhas = velocidades • ● = 3 bar
-    </div>
-    <div class="chartWrap">
-      <canvas id="chartCanvas"></canvas>
-    </div>
-
-    <div style="margin-top:10px;">
-      <button onclick="downloadChartPNG()">Baixar gráfico (PNG)</button>
-    </div>
-
-    <div class="note">
-      <b>Observação:</b> ISO define <b>vazão</b>. Tipo de jato/ângulo/classe de gotas é outra decisão.
-      <div class="muted" style="margin-top:6px;">
-        No celular: deslize a tabela para o lado (↔) se precisar ver todas as colunas.
-      </div>
-    </div>
-
   </div>
-</div>
+
+  <div class="container">
+    <!-- Controles -->
+    <div class="glass-panel controls">
+      <h2 style="font-size: 18px; margin-bottom: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 12px;">Parâmetros</h2>
+      
+      <div class="control-group">
+        <label>Espaçamento entre bicos (cm)</label>
+        <div class="flex-row" style="align-items: center; gap: 8px;">
+          <input type="range" id="rngSpacing" min="30" max="100" step="1" value="50" style="flex: 2;">
+          <input type="number" id="numSpacing" value="50" step="1" style="flex: 1; padding: 8px; font-size: 14px;">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Vazão desejada (L/ha)</label>
+        <div class="flex-row" style="align-items: center; gap: 8px;">
+          <input type="range" id="rngRate" min="20" max="300" step="1" value="60" style="flex: 2;">
+          <input type="number" id="numRate" value="60" step="1" style="flex: 1; padding: 8px; font-size: 14px;">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Unidade de Pressão</label>
+        <div class="unit-toggle">
+          <button id="btnBar" class="active" onclick="setUnit('bar')">BAR</button>
+          <button id="btnPsi" onclick="setUnit('psi')">PSI</button>
+        </div>
+      </div>
+
+      <div class="control-group" style="margin-top: 8px;">
+        <label>Limites de Pressão (Mín / Máx)</label>
+        <div class="flex-row">
+          <input type="number" id="numPMin" value="1.5" step="0.1">
+          <input type="number" id="numPMax" value="5.0" step="0.1">
+        </div>
+      </div>
+
+      <div class="control-group" style="margin-top: 8px;">
+        <label>Velocidades Reais (km/h)</label>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="flex-row">
+            <div>
+              <span style="font-size:11px; color:var(--text-muted);">Mínima</span>
+              <input type="number" id="numVMin" value="12" step="0.5">
+            </div>
+            <div>
+              <span style="font-size:11px; color:var(--text-muted);">Média</span>
+              <input type="number" id="numVAvg" value="16" step="0.5">
+            </div>
+            <div>
+              <span style="font-size:11px; color:var(--text-muted);">Máxima</span>
+              <input type="number" id="numVMax" value="20" step="0.5">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="dashboard">
+      <div class="glass-panel" style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <h2 style="font-size: 22px; display:flex; justify-content:space-between; align-items:center;">
+             Top Recomendados
+             <span id="matchCount" style="font-size:14px; color:var(--text-muted); font-family:Inter; font-weight:400;">Buscando...</span>
+          </h2>
+          <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Bicos que operam dentro da pressão ideal de forma segura para a faixa de velocidade.</p>
+        </div>
+        
+        <div id="topCards" class="recommended-grid">
+          <!-- Cards injetados via JS -->
+        </div>
+      </div>
+
+      <div class="glass-panel">
+        <h2 style="font-size: 20px; margin-bottom: 12px;">Desempenho por Bico (Pressão vs Velocidade)</h2>
+        <div class="chart-container">
+          <canvas id="mainChart"></canvas>
+        </div>
+      </div>
+
+      <div class="glass-panel">
+        <h2 style="font-size: 20px; margin-bottom: 12px;">Tabela de Dados Técnicos</h2>
+        <div class="table-responsive">
+          <table class="premium-table" id="dataTable">
+            <!-- Injetado via JS -->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
+  // Vazão em L/min (q3) é calculada na norma como: {tamanho do bico em GPM} * 3.785 (fator Galão p/ Litro)
   const NOZZLES = [
-    { iso:"005",  q3:0.20 },
-    { iso:"01",   q3:0.39 },
-    { iso:"0134", q3:0.53 },
-    { iso:"015",  q3:0.59 },
-    { iso:"0175", q3:0.69 },
-    { iso:"02",   q3:0.79 },
-    { iso:"025",  q3:0.99 },
-    { iso:"03",   q3:1.19 },
-    { iso:"04",   q3:1.59 },
-    { iso:"05",   q3:1.98 },
-    { iso:"06",   q3:2.38 },
-    { iso:"08",   q3:3.17 }
-  ];
+    { iso:"01",   size: 0.1,   color:"#F28C28" }, // Laranja
+    { iso:"0134", size: 0.134, color:"#795548" }, // Marrom
+    { iso:"015",  size: 0.15,  color:"#4CAF50" }, // Verde
+    { iso:"0175", size: 0.175, color:"#9E9E9E" }, // Cinza
+    { iso:"02",   size: 0.2,   color:"#FFEB3B" }, // Amarelo
+    { iso:"025",  size: 0.25,  color:"#9C27B0" }, // Lilás
+    { iso:"03",   size: 0.3,   color:"#2196F3" }, // Azul
+    { iso:"04",   size: 0.4,   color:"#F44336" }, // Vermelho
+    { iso:"05",   size: 0.5,   color:"#A1887F" }, // Marrom Claro
+    { iso:"06",   size: 0.6,   color:"#BDBDBD" }, // Cinza Prata
+    { iso:"08",   size: 0.8,   color:"#FFFFFF" }  // Branco
+  ].map(n => ({ iso: n.iso, color: n.color, q3: n.size * 3.785 }));
 
-  let PRESS_UNIT = "bar";
-  const BAR_TO_PSI = 14.5037738;
+  let PRESS_UNIT = 'bar';
+  const BAR_TO_PSI = 14.5038;
   const P_REF_BAR = 3.0;
-  const P_REF_PSI = P_REF_BAR * BAR_TO_PSI;
-
-  function unitLabel(){ return PRESS_UNIT === "bar" ? "bar" : "psi"; }
-  function pRef(){ return PRESS_UNIT === "bar" ? P_REF_BAR : P_REF_PSI; }
-  function tag(cls, text){ return `<span class="tag ${cls}">${text}</span>`; }
-
-  function num(id){
-    const v = document.getElementById(id).value;
-    if (v === "" || v === null || v === undefined) return null;
-    const n = Number(v);
-    return Number.isFinite(n) ? n : null;
-  }
-
-  function setSpacing(v){
-    document.getElementById("spacingCm").value = v;
-    document.getElementById("btn35").classList.toggle("active", v===35);
-    document.getElementById("btn50").classList.toggle("active", v===50);
-  }
-
-  function limparVel(){
-    ["vMin","vAvg","vMax"].forEach(id=>document.getElementById(id).value="");
-  }
-
-  function setUnit(u){
-    if (u === PRESS_UNIT) return;
-
-    const pMinEl = document.getElementById("pMin");
-    const pMaxEl = document.getElementById("pMax");
-
-    const oldMin = Number(pMinEl.value);
-    const oldMax = Number(pMaxEl.value);
-
-    const oldUnit = PRESS_UNIT;
-    PRESS_UNIT = u;
-
-    document.getElementById("btnBar").classList.toggle("active", u==="bar");
-    document.getElementById("btnPsi").classList.toggle("active", u==="psi");
-
-    document.getElementById("pressureLabel").innerText = `Faixa de pressão (${unitLabel()}) – mín / máx`;
-
-    document.getElementById("formulaText").innerText =
-      PRESS_UNIT === "bar"
-        ? "Q (L/min por bico) = (L/ha × km/h × espaçamento(m)) / 600 · P (bar) = 3 × (Q / Q@3bar)²"
-        : "Q (L/min por bico) = (L/ha × km/h × espaçamento(m)) / 600 · P (psi) = 43,5 × (Q / Q@3bar)²";
-
-    if (Number.isFinite(oldMin)){
-      pMinEl.value = (oldUnit==="bar" && u==="psi")
-        ? (oldMin * BAR_TO_PSI).toFixed(1)
-        : (oldMin / BAR_TO_PSI).toFixed(1);
-    }
-    if (Number.isFinite(oldMax)){
-      pMaxEl.value = (oldUnit==="bar" && u==="psi")
-        ? (oldMax * BAR_TO_PSI).toFixed(1)
-        : (oldMax / BAR_TO_PSI).toFixed(1);
-    }
-  }
-
-  function qPorBico(rateLha, speedKmh, spacingM){
-    return (rateLha * speedKmh * spacingM) / 600.0;
-  }
-  function pressaoNecessaria(q, q3){
-    return pRef() * Math.pow(q / q3, 2);
-  }
-  function velocidadePara(rateLha, spacingM, q){
-    return (q * 600.0) / (rateLha * spacingM);
-  }
-
   
-  // ==============================
-  // GRÁFICO (Canvas puro / offline)
-  // ==============================
-  let __lastChartPayload = null;
+  // Elementos
+  const rngSpacing = document.getElementById('rngSpacing');
+  const numSpacing = document.getElementById('numSpacing');
+  const rngRate = document.getElementById('rngRate');
+  const numRate = document.getElementById('numRate');
+  
+  const numPMin = document.getElementById('numPMin');
+  const numPMax = document.getElementById('numPMax');
+  const numVMin = document.getElementById('numVMin');
+  const numVAvg = document.getElementById('numVAvg');
+  const numVMax = document.getElementById('numVMax');
 
-  function renderChart(rows, speeds, rateLha, spacingCm){
-    const canvas = document.getElementById("chartCanvas");
-    if (!canvas) return;
+  // Chart
+  let myChart = null;
 
-    const wrap = canvas.parentElement;
-    const cssW = Math.max(320, (wrap?.clientWidth || 800) - 2);
-    const cssH = 420;
-
-    const dpr = window.devicePixelRatio || 1;
-    canvas.style.width = cssW + "px";
-    canvas.style.height = cssH + "px";
-    canvas.width = Math.floor(cssW * dpr);
-    canvas.height = Math.floor(cssH * dpr);
-
-    const ctx = canvas.getContext("2d");
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    __lastChartPayload = { rows, speeds, rateLha, spacingCm };
-
-    const shown = (rows || []).slice(0, 12);
-    ctx.clearRect(0,0,cssW,cssH);
-
-    if (!shown.length){
-      ctx.fillStyle = "#0F2A33";
-      ctx.font = "700 14px Arial";
-      ctx.fillText("Sem dados para plotar", 12, 24);
-      return;
-    }
-
-    // xlim = Ref3 * 1.15
-    const speedVals = (speeds || []).map(s => s.v).filter(v => typeof v === "number" && isFinite(v));
-    const ref3 = speedVals.length ? Math.max(...speedVals) : 40;
-    const xMax = ref3 * 1.15;
-
-    const padL = 120, padR = 18, padT = 18, padB = 34;
-    const plotW = cssW - padL - padR;
-    const plotH = cssH - padT - padB;
-
-    const rowH = plotH / shown.length;
-    const barH = Math.min(16, rowH * 0.55);
-
-    const xToPx = (x) => padL + (x / xMax) * plotW;
-    const yCenter = (i) => padT + rowH * i + rowH/2;
-
-    // fundo
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0,0,cssW,cssH);
-
-    // grade vertical
-    ctx.strokeStyle = "#e9ecf2";
-    ctx.lineWidth = 1;
-    for (let k=0; k<=5; k++){
-      const xv = (xMax * k)/5;
-      const xp = xToPx(xv);
-      ctx.beginPath();
-      ctx.moveTo(xp, padT);
-      ctx.lineTo(xp, padT + plotH);
-      ctx.stroke();
-
-      ctx.fillStyle = "#60717A";
-      ctx.font = "12px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText(xv.toFixed(0), xp, padT + plotH + 18);
-    }
-
-    // linhas tracejadas das velocidades
-    ctx.setLineDash([6,4]);
-    ctx.strokeStyle = "#111111";
-    ctx.lineWidth = 1;
-    for (const s of (speeds || [])){
-      const xp = xToPx(s.v);
-      ctx.beginPath();
-      ctx.moveTo(xp, padT);
-      ctx.lineTo(xp, padT + plotH);
-      ctx.stroke();
-    }
-    ctx.setLineDash([]);
-
-    const spacingM = spacingCm / 100.0;
-
-    for (let i=0; i<shown.length; i++){
-      const r = shown[i];
-      const yc = yCenter(i);
-
-      // label
-      ctx.fillStyle = "#0F2A33";
-      ctx.font = "700 13px Arial";
-      ctx.textAlign = "left";
-      ctx.fillText(`ISO ${r.nz.iso}`, 12, yc + 4);
-
-      // barra (vAtPmin -> vAtPmax)
-      const x1 = xToPx(r.vAtPmin);
-      const x2 = xToPx(r.vAtPmax);
-      const w = Math.max(2, x2 - x1);
-
-      ctx.fillStyle = r.recomendado ? "#E7F8EE" : "#FFE8E8";
-      ctx.strokeStyle = "#cfd6df";
-      ctx.lineWidth = 1;
-
-      roundRect(ctx, x1, yc - barH/2, w, barH, 6);
-      ctx.fill();
-      ctx.stroke();
-
-      // marcador V@3bar (●)
-      if (rateLha > 0 && spacingM > 0){
-        const v3 = (600.0 * r.nz.q3) / (rateLha * spacingM);
-        const xp = xToPx(v3);
-        ctx.fillStyle = "#111111";
-        ctx.beginPath();
-        ctx.arc(xp, yc, 4, 0, Math.PI*2);
-        ctx.fill();
+  function initChart() {
+    Chart.defaults.color = "rgba(255,255,255,0.7)";
+    Chart.defaults.font.family = "Inter";
+    
+    const ctx = document.getElementById('mainChart').getContext('2d');
+    myChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: [], datasets: [] },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(10,15,20,0.9)',
+            titleFont: { family: 'Outfit', size: 16 },
+            bodyFont: { size: 14 },
+            padding: 12,
+            borderColor: 'rgba(255,255,255,0.1)',
+            borderWidth: 1,
+            callbacks: {
+              label: (ctx) => {
+                if (ctx.dataset.type === 'scatter') {
+                    return `3 bar (ISO Padrão): ${ctx.raw.x.toFixed(1)} km/h`;
+                }
+                const r = ctx.raw;
+                return [
+                  `Janela: ${r.min.toFixed(1)} a ${r.max.toFixed(1)} km/h`,
+                  `Intervalo ${PRESS_UNIT.toUpperCase()}: ${document.getElementById('numPMin').value} a ${document.getElementById('numPMax').value}`
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          x: { 
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            title: { display: true, text: 'Velocidade (km/h)', color: '#fff' }
+          },
+          y: { 
+            grid: { display: false },
+            ticks: { font: { family: 'Outfit', weight: 'bold', size: 14 } }
+          }
+        }
       }
-    }
-
-    // título
-    ctx.fillStyle = "#0F2A33";
-    ctx.font = "900 14px Arial";
-    ctx.textAlign = "left";
-    ctx.fillText("Faixa de velocidade (Pmin–Pmax)  •  ● = 3 bar  •  eixo = Ref3×1,15", 12, 14);
+    });
   }
 
-  function roundRect(ctx, x, y, w, h, r){
-    r = Math.min(r, w/2, h/2);
-    ctx.beginPath();
-    ctx.moveTo(x+r, y);
-    ctx.arcTo(x+w, y, x+w, y+h, r);
-    ctx.arcTo(x+w, y+h, x, y+h, r);
-    ctx.arcTo(x, y+h, x, y, r);
-    ctx.arcTo(x, y, x+w, y, r);
-    ctx.closePath();
-  }
+  function setUnit(u) {
+    if(PRESS_UNIT === u) return;
+    
+    let oldMin = parseFloat(numPMin.value);
+    let oldMax = parseFloat(numPMax.value);
 
-  window.addEventListener("resize", () => {
-    if (__lastChartPayload){
-      const p = __lastChartPayload;
-      renderChart(p.rows, p.speeds, p.rateLha, p.spacingCm);
-    }
-  });
+    PRESS_UNIT = u;
+    document.getElementById('btnBar').classList.toggle('active', u==='bar');
+    document.getElementById('btnPsi').classList.toggle('active', u==='psi');
 
-function calcular(){
-    const spacingCm = num("spacingCm");
-    const rateLha   = num("rateLha");
-    const pMin      = num("pMin");
-    const pMax      = num("pMax");
-
-    const vMin = num("vMin");
-    const vAvg = num("vAvg");
-    const vMax = num("vMax");
-
-    const ref1 = num("ref1");
-    const ref2 = num("ref2");
-    const ref3 = num("ref3");
-
-    const msg = document.getElementById("msg");
-    const tabela = document.getElementById("tabela");
-
-    if (!spacingCm || !rateLha || !pMin || !pMax || spacingCm<=0 || rateLha<=0 || pMin<=0 || pMax<=0 || pMax<=pMin){
-      msg.style.display="block";
-      msg.innerHTML=`Preencha corretamente: espaçamento, L/ha e pressão (máx maior que mín) em <b>${unitLabel()}</b>.`;
-      tabela.innerHTML="";
-      return;
-    }
-
-    const spacingM = spacingCm/100.0;
-    const modoReal = (vMin && vAvg && vMax && vMin>0 && vAvg>0 && vMax>0);
-
-    let speeds = [];
-    if (modoReal){
-      speeds = [
-        {k:"mín", v:vMin},
-        {k:"média", v:vAvg},
-        {k:"máx", v:vMax}
-      ].sort((a,b)=>a.v-b.v);
+    if(u === 'psi') {
+      numPMin.value = (oldMin * BAR_TO_PSI).toFixed(1);
+      numPMax.value = (oldMax * BAR_TO_PSI).toFixed(1);
     } else {
-      const arr = [
-        {k:"ref 1", v:ref1},
-        {k:"ref 2", v:ref2},
-        {k:"ref 3", v:ref3},
-      ].filter(x=>x.v && x.v>0).sort((a,b)=>a.v-b.v);
-      speeds = arr.length ? arr : [{k:"ref", v:16}];
+      numPMin.value = (oldMin / BAR_TO_PSI).toFixed(1);
+      numPMax.value = (oldMax / BAR_TO_PSI).toFixed(1);
     }
+    update();
+  }
 
-    msg.style.display="block";
-    msg.innerHTML = `
-      <b>Entradas:</b> Espaçamento <span class="mono">${spacingCm.toFixed(1)} cm</span> ·
-      Taxa <span class="mono">${rateLha.toFixed(1)} L/ha</span> ·
-      Pressão <span class="mono">${pMin.toFixed(1)}–${pMax.toFixed(1)} ${unitLabel()}</span> ·
-      ${modoReal
-        ? `Modo: <b>Velocidades reais</b> (${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
-        : `Modo: <b>Sem velocidades reais</b> (${speeds.map(s=>`${s.v} km/h`).join(" / ")})`
-      }
-    `;
+  function pRef() { return PRESS_UNIT === 'bar' ? P_REF_BAR : (P_REF_BAR * BAR_TO_PSI); }
+  function qPorBico(rate, vel, spacM) { return (rate * vel * spacM) / 600.0; }
+  function pressaoNec(q, q3) { return pRef() * Math.pow(q / q3, 2); }
+  function velPara(rate, spacM, q) { return (q * 600.0) / (rate * spacM); }
 
-    const rows = NOZZLES.map(nz=>{
-      const pres = speeds.map(s=>{
-        const q = qPorBico(rateLha, s.v, spacingM);
-        const p = pressaoNecessaria(q, nz.q3);
-        const ok = (p >= pMin && p <= pMax);
-        return { ...s, q, p, ok };
-      });
+  function update() {
+    const spacingM = parseFloat(numSpacing.value) / 100.0;
+    const rate = parseFloat(numRate.value);
+    const pMin = parseFloat(numPMin.value) || 0.1;
+    const pMax = parseFloat(numPMax.value) || 10.0;
+    
+    const vMin = parseFloat(numVMin.value) || 0;
+    const vAvg = parseFloat(numVAvg.value) || 0;
+    const vMax = parseFloat(numVMax.value) || 0;
+    
+    const maxLimitsValid = pMax > pMin && rate > 0 && spacingM > 0;
+    if(!maxLimitsValid) return;
 
-      const qAtPmin = nz.q3 * Math.sqrt(pMin / pRef());
-      const qAtPmax = nz.q3 * Math.sqrt(pMax / pRef());
-      const vAtPmin = velocidadePara(rateLha, spacingM, qAtPmin);
-      const vAtPmax = velocidadePara(rateLha, spacingM, qAtPmax);
-      const span = vAtPmax - vAtPmin;
+    let rows = [];
+    
+    NOZZLES.forEach(nz => {
+        // Velocidades na pressao min e max
+        const qAtPmin = nz.q3 * Math.sqrt(pMin / pRef());
+        const qAtPmax = nz.q3 * Math.sqrt(pMax / pRef());
+        
+        const vAtPmin = velPara(rate, spacingM, qAtPmin);
+        const vAtPmax = velPara(rate, spacingM, qAtPmax);
+        const vAt3Bar = velPara(rate, spacingM, nz.q3);
 
-      let recomendado = false;
-      if (modoReal){
-        recomendado = pres.every(x => x.ok);
+        // Verifica pressao nas 3 velocidades informadas
+        const qVmin = qPorBico(rate, vMin, spacingM);
+        const pVmin = pressaoNec(qVmin, nz.q3);
+        const qVavg = qPorBico(rate, vAvg, spacingM);
+        const pVavg = pressaoNec(qVavg, nz.q3);
+        const qVmax = qPorBico(rate, vMax, spacingM);
+        const pVmax = pressaoNec(qVmax, nz.q3);
+
+        const ok = (pVmin >= pMin && pVmax <= pMax && vMin>0 && vMax>0 && pVmin <= pVmax);
+
+        rows.push({
+            nz: nz,
+            vAtPmin, vAtPmax, vAt3Bar,
+            pVavg, ok,
+            pressures: [pVmin, pVavg, pVmax]
+        });
+    });
+
+    // Sort by recommended, then closest to ref pressure (3bar or 43.5psi)
+    rows.sort((a,b) => {
+        if(a.ok !== b.ok) return a.ok ? -1 : 1;
+        return Math.abs(a.pVavg - pRef()) - Math.abs(b.pVavg - pRef());
+    });
+
+    renderCards(rows, pMin, pMax, vMin, vMax);
+    updateChart(rows, vMin, vMax);
+    renderTable(rows, vMin, vAvg, vMax);
+  }
+
+  function renderCards(rows, pMin, pMax, vMin, vMax) {
+      const container = document.getElementById('topCards');
+      const tops = rows.filter(r => r.ok);
+      document.getElementById('matchCount').innerText = `${tops.length} encontrados`;
+
+      if(tops.length === 0) {
+          container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">
+              <span style="font-size:32px;">⚠️</span>
+              <p>Nenhum bico atende a essa faixa com segurança.<br>Tente ajustar a vazão (L/ha), velocidade ou alargar os limites de pressão.</p>
+          </div>`;
+          // Include a few non-recommended just to show something
+          rows.slice(0,3).forEach(r => container.appendChild(createCard(r, false)));
       } else {
-        const vLow = Math.min(...speeds.map(s=>s.v));
-        const vHigh = Math.max(...speeds.map(s=>s.v));
-        const overlapLow = Math.max(vAtPmin, vLow);
-        const overlapHigh = Math.min(vAtPmax, vHigh);
-        const overlap = Math.max(0, overlapHigh - overlapLow);
-        recomendado = overlap >= 2.0;
+          container.innerHTML = '';
+          tops.slice(0,4).forEach(r => container.appendChild(createCard(r, true)));
       }
+  }
 
-      const pMean = pres.reduce((a,x)=>a+x.p,0)/pres.length;
-      return { nz, pres, vAtPmin, vAtPmax, span, recomendado, pMean };
-    });
+  function createCard(r, isRecommended) {
+      const div = document.createElement('div');
+      div.className = 'nozzle-card';
+      div.style.setProperty('--nz-color', r.nz.color);
+      
+      const pUnit = PRESS_UNIT.toUpperCase();
+      const avgStr = isNaN(r.pVavg) ? '--' : r.pVavg.toFixed(1);
 
-    rows.sort((a,b)=>{
-      if (a.recomendado !== b.recomendado) return a.recomendado ? -1 : 1;
-      const da = Math.abs(a.pMean - pRef());
-      const db = Math.abs(b.pMean - pRef());
-      if (da !== db) return da - db;
-      return b.span - a.span;
-    });
+      div.innerHTML = `
+        <div class="noz-header">
+            <div class="noz-iso">ISO ${r.nz.iso}</div>
+            <div class="noz-q3">@3bar: ${r.nz.q3.toFixed(2)} L/m</div>
+        </div>
+        <div class="noz-metrics">
+            <div class="metric-row">
+                <span class="metric-label">P. Média p/ ${document.getElementById('numVAvg').value}km/h</span>
+                <span class="metric-val" style="color: ${isRecommended ? '#fff' : 'var(--accent-error)'}">${avgStr} ${pUnit}</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">Faixa Ideal (km/h)</span>
+                <span class="metric-val">${r.vAtPmin.toFixed(1)} - ${r.vAtPmax.toFixed(1)}</span>
+            </div>
+        </div>
+        <div>
+            <span class="status-badge ${isRecommended ? 'ok' : 'bad'}">${isRecommended ? 'RECOMENDADO' : 'FORA DA FAIXA'}</span>
+        </div>
+      `;
+      return div;
+  }
 
-    let html = `<div class="tableWrap"><table>
-      <thead>
+  function renderTable(rows, vMin, vAvg, vMax) {
+      const tbody = document.getElementById('dataTable');
+      const pUnit = PRESS_UNIT.toUpperCase();
+      const sysPMin = parseFloat(numPMin.value);
+      const sysPMax = parseFloat(numPMax.value);
+      
+      let html = `<thead>
         <tr>
-          <th class="left">ISO</th>
-          <th>Q @ 3 bar<br><span class="muted">(L/min)</span></th>
-          ${speeds.map(s=>`<th>${s.k}<br>${s.v} km/h</th>`).join("")}
-          <th>Janela de velocidade<br><span class="muted">(Pmin–Pmax)</span></th>
+          <th style="text-align:left">ISO</th>
+          <th>Q@3bar</th>
+          <th>Pressão V. Mín</th>
+          <th>Pressão V. Méd</th>
+          <th>Pressão V. Máx</th>
+          <th>Janela (km/h)</th>
           <th>Veredito</th>
         </tr>
-      </thead>
-      <tbody>`;
+      </thead><tbody>`;
 
-    for (const r of rows){
-      const pCells = r.pres.map(x=>{
-        const cls = x.ok ? "ok" : "bad";
-        return `<td>
-          ${tag(cls, `${x.p.toFixed(1)} ${unitLabel()}`)}<br>
-          <span class="muted mono">Q ${x.q.toFixed(3)} L/min</span>
-        </td>`;
-      }).join("");
-
-      const janela = `${r.vAtPmin.toFixed(1)} – ${r.vAtPmax.toFixed(1)} km/h`;
-      const janelaTag = `${tag("mid", janela)} <span class="muted">(Δ ${r.span.toFixed(1)})</span>`;
-      const ver = r.recomendado ? tag("ok","RECOMENDADO") : tag("bad","NÃO");
-
-      html += `<tr>
-        <td class="left"><b>ISO ${r.nz.iso}</b></td>
-        <td class="mono">${r.nz.q3.toFixed(2)}</td>
-        ${pCells}
-        <td>${janelaTag}</td>
-        <td>${ver}</td>
-      </tr>`;
-    }
-
-    html += `</tbody></table></div>`;
-
-    const top3 = rows.filter(r=>r.recomendado).slice(0,3).map(r=>`ISO ${r.nz.iso}`).join(", ");
-    html += `<p class="muted" style="margin-top:10px;">
-      <b>Top sugeridos:</b> ${top3 ? top3 : "nenhum bico ficou dentro da faixa em todas as velocidades (ajuste L/ha, velocidades ou pressão)."}
-    </p>`;
-
-    tabela.innerHTML = html;
-
-    // desenha gráfico
-    renderChart(rows, speeds, rateLha, spacingCm);
+      rows.forEach(r => {
+          const makeCell = (p) => {
+              const cls = (p >= sysPMin && p <= sysPMax && p > 0) ? 'ok' : 'bad';
+              const color = cls === 'ok' ? 'var(--accent-green)' : 'var(--accent-error)';
+              return `<td style="color:${color}; font-family: Outfit; font-weight: 600;">${isNaN(p)||!isFinite(p)?'--':p.toFixed(1)} ${pUnit}</td>`;
+          };
+          
+          html += `<tr>
+            <td style="text-align:left; font-weight:bold; color:${r.nz.color}">ISO ${r.nz.iso}</td>
+            <td style="font-family: Outfit; color:var(--text-muted)">${r.nz.q3.toFixed(2)}</td>
+            ${makeCell(r.pressures[0])}
+            ${makeCell(r.pressures[1])}
+            ${makeCell(r.pressures[2])}
+            <td><span class="status-badge" style="background:rgba(255,255,255,0.05); color:#fff; border:none; padding: 4px 8px;">${r.vAtPmin.toFixed(1)} - ${r.vAtPmax.toFixed(1)}</span></td>
+            <td><span class="status-badge ${r.ok ? 'ok' : 'bad'}" style="padding: 4px 8px;">${r.ok ? 'OK' : 'FORA'}</span></td>
+          </tr>`;
+      });
+      html += `</tbody>`;
+      tbody.innerHTML = html;
   }
 
-  document.getElementById("pressureLabel").innerText = `Faixa de pressão (${unitLabel()}) – mín / máx`;
+  function updateChart(rows, sysVMin, sysVMax) {
+      if(!myChart) return;
+      
+      // Limita a exibição do gráfico para focar nas velocidades práticas
+      myChart.options.scales.x.min = Math.max(0, sysVMin - 5);
+      myChart.options.scales.x.max = sysVMax + 10;
 
-function downloadChartPNG(){
-  const canvas = document.getElementById("chartCanvas");
-  if (!canvas){
-    alert("Gráfico ainda não foi gerado.");
-    return;
+      const labels = rows.map(r => `ISO ${r.nz.iso}`);
+      
+      const barData = rows.map(r => {
+          return {
+              x: [r.vAtPmin, r.vAtPmax], // [min_val, max_val] interval 
+              y: `ISO ${r.nz.iso}`,
+              min: r.vAtPmin,
+              max: r.vAtPmax,
+              color: r.nz.color,
+              ok: r.ok
+          }
+      });
+
+      const scatterData = rows.map(r => {
+          return {
+              x: r.vAt3Bar,
+              y: `ISO ${r.nz.iso}`
+          }
+      });
+
+      myChart.data.labels = labels;
+      myChart.data.datasets = [
+        {
+          type: 'bar',
+          order: 2,
+          label: 'Janela de Velocidade (Pmin a Pmax)',
+          data: barData,
+          backgroundColor: barData.map(d => !d.ok ? 'rgba(255, 75, 75, 0.4)' : d.color),
+          borderColor: barData.map(d => d.ok ? d.color : 'rgba(255, 75, 75, 1)'),
+          borderWidth: 1,
+          borderRadius: 6,
+          borderSkipped: false,
+          barPercentage: 0.6
+        },
+        {
+          type: 'scatter',
+          order: 1,
+          label: 'Padrão (3 bar)',
+          data: scatterData,
+          backgroundColor: '#ffffff',
+          borderColor: '#111111',
+          borderWidth: 2,
+          pointRadius: 6,
+          pointHoverRadius: 8
+        }
+      ];
+      
+      // Annotations for real speeds
+      myChart.options.plugins.annotation = {
+         annotations: {
+             line1: { type: 'line', xMin: sysVMin, xMax: sysVMin, borderColor: 'rgba(255, 255, 255, 0.4)', borderDash: [5, 5] },
+             line2: { type: 'line', xMin: sysVMax, xMax: sysVMax, borderColor: 'rgba(255, 255, 255, 0.4)', borderDash: [5, 5] }
+         }
+      };
+
+      myChart.update();
   }
 
-  const link = document.createElement("a");
-  link.download = "grafico_spray_precision.png";
-  link.href = canvas.toDataURL("image/png");
-  link.click();
-}
+  // Event Listeners
+  rngSpacing.addEventListener('input', (e) => { numSpacing.value = e.target.value; update(); });
+  numSpacing.addEventListener('input', (e) => { rngSpacing.value = e.target.value; update(); });
+  rngRate.addEventListener('input', (e) => { numRate.value = e.target.value; update(); });
+  numRate.addEventListener('input', (e) => { rngRate.value = e.target.value; update(); });
 
+  [numPMin, numPMax, numVMin, numVAvg, numVMax].forEach(el => {
+      el.addEventListener('input', update);
+  });
+
+  // Init
+  window.addEventListener('load', () => {
+    initChart();
+    update();
+  });
 
 </script>
 </body>
