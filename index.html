@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spray Precision PRO</title>
+  <title>Spray Precision PRO v6</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,6 +137,13 @@
       background: var(--text-main); color: var(--bg-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
 
+    .preset-btn {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: var(--text-muted);
+      border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; font-family: 'Inter'; cursor: pointer; transition: 0.2s;
+    }
+    .preset-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .preset-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; box-shadow: 0 0 10px var(--accent-glow); }
+
     .flex-row { display: flex; gap: 12px; }
     .flex-row > div { flex: 1; }
     
@@ -185,6 +192,7 @@
     }
     .status-badge.ok { background: rgba(56, 239, 125, 0.15); color: var(--accent-green); border: 1px solid rgba(56, 239, 125, 0.3); }
     .status-badge.bad { background: rgba(255, 75, 75, 0.15); color: var(--accent-error); border: 1px solid rgba(255, 75, 75, 0.3); }
+    .status-badge.warning { background: rgba(255, 193, 7, 0.15); color: #FFC107; border: 1px solid rgba(255, 193, 7, 0.3); }
 
     .chart-container {
       position: relative; height: 400px; width: 100%;
@@ -232,16 +240,61 @@
       }
     }
 
+    /* Help Modal */
+    .info-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+      color: var(--accent); font-size: 22px; font-weight: 800; font-family: 'Outfit';
+      cursor: pointer; transition: 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .info-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
+    
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 1000; display: none; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-content {
+      background: #0d1216; border: 1px solid var(--accent);
+      border-radius: var(--card-radius); padding: 32px; max-width: 600px;
+      width: 100%; box-shadow: 0 0 40px rgba(0, 210, 255, 0.15);
+      position: relative; max-height: 90vh; overflow-y: auto; color: var(--text-main);
+    }
+    .modal-content h2 { margin-bottom: 16px; color: var(--accent); font-size: 28px; }
+    .modal-content h3 { color: #fff; margin-top: 24px; margin-bottom: 12px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;}
+    .modal-content p, .modal-content li { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 8px; }
+    .modal-content ul { padding-left: 20px; margin-bottom: 16px; }
+    
+    .close-btn {
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 32px; cursor: pointer; transition: 0.2s;
+    }
+    .close-btn:hover { color: #fff; }
+
   </style>
 </head>
 <body>
 
   <div class="header">
     <div class="header-icon">💧</div>
-    <div>
+    <div style="flex:1;">
       <h1>Spray Precision <span style="font-weight:300;">PRO</span></h1>
-      <p>Simulador Interativo de Seleção de Bicos ISO para Aplicação Agrícola</p>
+      <div style="display:flex; align-items:center; gap:12px; margin-top:6px; flex-wrap:wrap;">
+          <p style="margin-top:0;">Simulador de Bicos ISO para Aplicação</p>
+          <span style="color:var(--glass-border);">|</span>
+          <span style="font-size:13px; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
+            <span>Criado por <strong>Eduardo L. de Andrade</strong></span>
+            <a href="https://wa.me/5565999106415" target="_blank" style="color:#25D366; text-decoration:none; display:flex; align-items:center; gap:4px; font-weight:700;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+          </span>
+      </div>
     </div>
+    <button class="info-btn" onclick="document.getElementById('helpModal').style.display='flex'" title="Como Usar o Simulador">?</button>
   </div>
 
   <div class="container">
@@ -251,6 +304,10 @@
       
       <div class="control-group">
         <label>Espaçamento entre bicos (cm)</label>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+          <button type="button" class="preset-btn spacing-btn" onclick="setSpacing(35)" data-val="35">35 cm</button>
+          <button type="button" class="preset-btn spacing-btn active" onclick="setSpacing(50)" data-val="50">50 cm</button>
+        </div>
         <div class="flex-row" style="align-items: center; gap: 8px;">
           <input type="range" id="rngSpacing" min="30" max="100" step="1" value="50" style="flex: 2;">
           <input type="number" id="numSpacing" value="50" step="1" style="flex: 1; padding: 8px; font-size: 14px;">
@@ -262,6 +319,16 @@
         <div class="flex-row" style="align-items: center; gap: 8px;">
           <input type="range" id="rngRate" min="20" max="300" step="1" value="60" style="flex: 2;">
           <input type="number" id="numRate" value="60" step="1" style="flex: 1; padding: 8px; font-size: 14px;">
+        </div>
+      </div>
+
+      <div class="control-group" style="margin-top: 8px;">
+        <label>Densidade da Calda (kg/L)</label>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="preset-btn active" onclick="setDensity(1.00)" data-val="1">Água (1.0)</button>
+          <button type="button" class="preset-btn" onclick="setDensity(1.08)" data-val="1.08" title="Fungicida + Óleo">Média (1.08)</button>
+          <button type="button" class="preset-btn" onclick="setDensity(1.20)" data-val="1.2" title="Nutrição Foliar">Pesada (1.20)</button>
+          <input type="number" id="numDensity" value="1.00" step="0.01" min="0.8" max="1.5" style="flex: 1; min-width: 80px;">
         </div>
       </div>
 
@@ -280,6 +347,8 @@
           <input type="number" id="numPMax" value="5.0" step="0.1">
         </div>
       </div>
+
+
 
       <div class="control-group" style="margin-top: 8px;">
         <label>Velocidades Reais (km/h)</label>
@@ -336,6 +405,33 @@
     </div>
   </div>
 
+  <!-- Help Modal Overlay -->
+  <div id="helpModal" class="modal-overlay" onclick="if(event.target === this) this.style.display='none'">
+    <div class="modal-content">
+      <button class="close-btn" onclick="document.getElementById('helpModal').style.display='none'" title="Fechar">&times;</button>
+      <h2>📖 Sobre o Spray Precision PRO</h2>
+      <p>Este aplicativo é um <strong>Simulador Agronômico de Alta Fidelidade</strong> desenvolvido para auxiliar profissionais na recomendação exata da ponta hidráulica (bico de pulverização) compatível com o padrão de cores ISO.</p>
+      
+      <h3>🎯 O que ele faz?</h3>
+      <ul>
+        <li>Gera automaticamente a janela de velocidades seguras de cada bico para evitar perdas ou derivas na sua barra.</li>
+        <li>Identifica matematicamente qual bico atingirá a Vazão Desejada (L/ha) sendo exigido apenas pela <b>Pressão Segura</b> da bomba.</li>
+      </ul>
+
+      <h3>⚖️ Inovação Técnica: Densidade da Calda</h3>
+      <p>Calculadoras teóricas pressupõem que você aplicará água pura, resultando em recomendações irrealistas na prática do defensivo. Aqui utilizamos <strong>Correção de Gravidade Específica</strong>.</p>
+      <ul>
+        <li><strong>Água:</strong> Selecione o peso base 1.00 kg/L.</li>
+        <li><strong>Misturas Fortes / Óleos Minerais:</strong> Utilize o atalho Média (1.08 kg/L). Compensa a perda de fluxo exigida pela formulação SC / CE espessa.</li>
+        <li><strong>Adubação Líquida / Nutrição Foliar:</strong> Caldas densas "xaroposas" travam o fluxo de L/min original do bico; use o atalho Pesada (1.20+ kg/L).</li>
+      </ul>
+      <p style="margin-top: 8px;"><em>O simulador fará a extração da raiz quadrada da densidade "escondido", penalizando ou aliviando os bicos teóricos para entregar a resposta real do cenário de campo ao limitador do manômetro.</em></p>
+
+      <h3>💡 Módulo de Extremo Operacional (Falha Segura)</h3>
+      <p>Caso você force os parâmetros (ex: 300 L/ha) numa velocidade fora de série onde absolutamente nenhum bico na vitrine conseguiria atuar usando uma pressão segura, o sistema ativará o protocolo de emergência.<br><br>Ele não esconde os resultados, mas sim pesquisa no catálogo a <b>"MELHOR ALTERNATIVA"</b> com uma etiqueta amarela de aviso, mostrando a única opção viável (a matematicamente mais próxima de oscilar em torno da calibração de fábrica ISO Padrão de 3 bar).</p>
+    </div>
+  </div>
+
 <script>
   // Vazão em L/min (q3) é calculada na norma como: {tamanho do bico em GPM} * 3.785 (fator Galão p/ Litro)
   const NOZZLES = [
@@ -361,6 +457,7 @@
   const numSpacing = document.getElementById('numSpacing');
   const rngRate = document.getElementById('rngRate');
   const numRate = document.getElementById('numRate');
+  const numDensity = document.getElementById('numDensity');
   
   const numPMin = document.getElementById('numPMin');
   const numPMax = document.getElementById('numPMax');
@@ -439,9 +536,44 @@
     update();
   }
 
+  function setSpacing(v) {
+      document.getElementById('numSpacing').value = v;
+      document.getElementById('rngSpacing').value = v;
+      updateSpacingButtons();
+      update();
+  }
+
+  function updateSpacingButtons() {
+      const v = parseFloat(document.getElementById('numSpacing').value);
+      document.querySelectorAll('.spacing-btn').forEach(b => {
+          if (parseFloat(b.getAttribute('data-val')) === v) {
+              b.classList.add('active');
+          } else {
+              b.classList.remove('active');
+          }
+      });
+  }
+
+  function setDensity(v) {
+      document.getElementById('numDensity').value = v.toFixed(2);
+      updatePresetButtons();
+      update();
+  }
+
+  function updatePresetButtons() {
+      const d = parseFloat(document.getElementById('numDensity').value);
+      document.querySelectorAll('.preset-btn').forEach(b => {
+          if (parseFloat(b.getAttribute('data-val')) === d) {
+              b.classList.add('active');
+          } else {
+              b.classList.remove('active');
+          }
+      });
+  }
+
   function pRef() { return PRESS_UNIT === 'bar' ? P_REF_BAR : (P_REF_BAR * BAR_TO_PSI); }
   function qPorBico(rate, vel, spacM) { return (rate * vel * spacM) / 600.0; }
-  function pressaoNec(q, q3) { return pRef() * Math.pow(q / q3, 2); }
+  function pressaoNec(qMix, q3, dens) { const qWaterEq = qMix * Math.sqrt(dens); return pRef() * Math.pow(qWaterEq / q3, 2); }
   function velPara(rate, spacM, q) { return (q * 600.0) / (rate * spacM); }
 
   function update() {
@@ -449,6 +581,7 @@
     const rate = parseFloat(numRate.value);
     const pMin = parseFloat(numPMin.value) || 0.1;
     const pMax = parseFloat(numPMax.value) || 10.0;
+    const density = parseFloat(numDensity.value) || 1.0;
     
     const vMin = parseFloat(numVMin.value) || 0;
     const vAvg = parseFloat(numVAvg.value) || 0;
@@ -460,21 +593,27 @@
     let rows = [];
     
     NOZZLES.forEach(nz => {
-        // Velocidades na pressao min e max
-        const qAtPmin = nz.q3 * Math.sqrt(pMin / pRef());
-        const qAtPmax = nz.q3 * Math.sqrt(pMax / pRef());
+        // Vazão de água pura correspondente aos limites de pressão
+        const qAtPmin_water = nz.q3 * Math.sqrt(pMin / pRef());
+        const qAtPmax_water = nz.q3 * Math.sqrt(pMax / pRef());
         
-        const vAtPmin = velPara(rate, spacingM, qAtPmin);
-        const vAtPmax = velPara(rate, spacingM, qAtPmax);
-        const vAt3Bar = velPara(rate, spacingM, nz.q3);
+        // Fator de conversão da calda
+        const qAtPmin_mix = qAtPmin_water / Math.sqrt(density);
+        const qAtPmax_mix = qAtPmax_water / Math.sqrt(density);
+        
+        const vAtPmin = velPara(rate, spacingM, qAtPmin_mix);
+        const vAtPmax = velPara(rate, spacingM, qAtPmax_mix);
+        
+        const qAt3Bar_mix = nz.q3 / Math.sqrt(density);
+        const vAt3Bar = velPara(rate, spacingM, qAt3Bar_mix);
 
         // Verifica pressao nas 3 velocidades informadas
         const qVmin = qPorBico(rate, vMin, spacingM);
-        const pVmin = pressaoNec(qVmin, nz.q3);
+        const pVmin = pressaoNec(qVmin, nz.q3, density);
         const qVavg = qPorBico(rate, vAvg, spacingM);
-        const pVavg = pressaoNec(qVavg, nz.q3);
+        const pVavg = pressaoNec(qVavg, nz.q3, density);
         const qVmax = qPorBico(rate, vMax, spacingM);
-        const pVmax = pressaoNec(qVmax, nz.q3);
+        const pVmax = pressaoNec(qVmax, nz.q3, density);
 
         const ok = (pVmin >= pMin && pVmax <= pMax && vMin>0 && vMax>0 && pVmin <= pVmax);
 
@@ -499,23 +638,30 @@
 
   function renderCards(rows, pMin, pMax, vMin, vMax) {
       const container = document.getElementById('topCards');
-      const tops = rows.filter(r => r.ok);
-      document.getElementById('matchCount').innerText = `${tops.length} encontrados`;
+      let tops = rows.filter(r => r.ok);
+      
+      let fallbackMode = false;
+      if (tops.length === 0 && rows.length > 0) {
+          fallbackMode = true;
+          tops = [rows[0]]; // O bico matematicamente mais proximo da pressao de referencia (3bar)
+      }
 
-      if(tops.length === 0) {
-          container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">
-              <span style="font-size:32px;">⚠️</span>
-              <p>Nenhum bico atende a essa faixa com segurança.<br>Tente ajustar a vazão (L/ha), velocidade ou alargar os limites de pressão.</p>
+      document.getElementById('matchCount').innerText = fallbackMode ? '1 alternativa com ressalvas' : `${tops.length} encontrados`;
+
+      container.innerHTML = '';
+      if (fallbackMode) {
+          container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; padding: 16px; border: 1px dashed var(--accent-error); border-radius: 12px; background: rgba(255,0,0,0.02); display: flex; flex-direction: column; gap: 8px;">
+              <span style="font-size:24px;">⚠️ Extremo Operacional</span>
+              <p style="color: var(--text-main); font-size: 14px;"><strong>Nenhum bico atende a faixa de velocidade nesses limites de pressão.</strong></p>
+              <p style="color: var(--text-muted); font-size: 13px;">O bico ISO abaixo é a opção mais próxima do ponto ideal, mas operará forçando os limites (risco de falha no leque ou alta deriva).</p>
           </div>`;
-          // Include a few non-recommended just to show something
-          rows.slice(0,3).forEach(r => container.appendChild(createCard(r, false)));
+          tops.forEach(r => container.appendChild(createCard(r, 'warning', "MELHOR ALTERNATIVA")));
       } else {
-          container.innerHTML = '';
-          tops.slice(0,4).forEach(r => container.appendChild(createCard(r, true)));
+          tops.slice(0,4).forEach(r => container.appendChild(createCard(r, 'ok', "RECOMENDADO")));
       }
   }
 
-  function createCard(r, isRecommended) {
+  function createCard(r, statusType, customText) {
       const div = document.createElement('div');
       div.className = 'nozzle-card';
       div.style.setProperty('--nz-color', r.nz.color);
@@ -531,7 +677,7 @@
         <div class="noz-metrics">
             <div class="metric-row">
                 <span class="metric-label">P. Média p/ ${document.getElementById('numVAvg').value}km/h</span>
-                <span class="metric-val" style="color: ${isRecommended ? '#fff' : 'var(--accent-error)'}">${avgStr} ${pUnit}</span>
+                <span class="metric-val" style="color: ${statusType !== 'bad' ? '#fff' : 'var(--accent-error)'}">${avgStr} ${pUnit}</span>
             </div>
             <div class="metric-row">
                 <span class="metric-label">Faixa Ideal (km/h)</span>
@@ -539,7 +685,7 @@
             </div>
         </div>
         <div>
-            <span class="status-badge ${isRecommended ? 'ok' : 'bad'}">${isRecommended ? 'RECOMENDADO' : 'FORA DA FAIXA'}</span>
+            <span class="status-badge ${statusType}">${customText}</span>
         </div>
       `;
       return div;
@@ -650,18 +796,21 @@
   }
 
   // Event Listeners
-  rngSpacing.addEventListener('input', (e) => { numSpacing.value = e.target.value; update(); });
-  numSpacing.addEventListener('input', (e) => { rngSpacing.value = e.target.value; update(); });
+  rngSpacing.addEventListener('input', (e) => { numSpacing.value = e.target.value; updateSpacingButtons(); update(); });
+  numSpacing.addEventListener('input', (e) => { rngSpacing.value = e.target.value; updateSpacingButtons(); update(); });
   rngRate.addEventListener('input', (e) => { numRate.value = e.target.value; update(); });
   numRate.addEventListener('input', (e) => { rngRate.value = e.target.value; update(); });
 
   [numPMin, numPMax, numVMin, numVAvg, numVMax].forEach(el => {
       el.addEventListener('input', update);
   });
+  numDensity.addEventListener('input', () => { updatePresetButtons(); update(); });
 
   // Init
   window.addEventListener('load', () => {
     initChart();
+    updateSpacingButtons();
+    updatePresetButtons();
     update();
   });
 
