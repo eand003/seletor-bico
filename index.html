@@ -212,7 +212,7 @@
     .noz-metrics { display: flex; flex-direction: column; gap: 8px; }
     .metric-row { display: flex; justify-content: space-between; font-size: 14px; }
     .metric-label { color: var(--text-muted); }
-    .metric-val { font-weight: 700; color: #fff; font-family: 'Outfit'; }
+    .metric-val { font-weight: 700; color: var(--text-main); font-family: 'Outfit'; }
     
     .status-badge {
       display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-align: center; margin-top: 4px;
@@ -243,7 +243,7 @@
       .premium-table { min-width: 100%; }
       .premium-table thead { display: none; }
       .premium-table, .premium-table tbody, .premium-table tr, .premium-table td { display: block; width: 100%; }
-      .premium-table tr { margin-bottom: 16px; border: 1px solid var(--glass-border); border-radius: 12px; padding: 4px; background: rgba(0,0,0,0.15); }
+      .premium-table tr { margin-bottom: 16px; border: 1px solid var(--glass-border); border-radius: 12px; padding: 4px; background: var(--control-bg); }
       .premium-table td { 
         text-align: right; 
         padding-left: 50%; 
@@ -290,7 +290,7 @@
       position: relative; max-height: 90vh; overflow-y: auto; color: var(--text-main);
     }
     .modal-content h2 { margin-bottom: 16px; color: var(--accent); font-size: 28px; }
-    .modal-content h3 { color: #fff; margin-top: 24px; margin-bottom: 12px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;}
+    .modal-content h3 { color: var(--text-main); margin-top: 24px; margin-bottom: 12px; font-size: 18px; border-bottom: 1px solid var(--control-border); padding-bottom: 8px;}
     .modal-content p, .modal-content li { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 8px; }
     .modal-content ul { padding-left: 20px; margin-bottom: 16px; }
     
@@ -299,7 +299,7 @@
       background: none; border: none; color: var(--text-muted);
       font-size: 32px; cursor: pointer; transition: 0.2s;
     }
-    .close-btn:hover { color: #fff; }
+    .close-btn:hover { color: var(--text-main); }
 
   </style>
 </head>
@@ -533,12 +533,13 @@
         },
         scales: {
           x: { 
-            grid: { color: 'rgba(255,255,255,0.05)' },
-            title: { display: true, text: 'Velocidade (km/h)', color: '#fff' }
+            grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)' },
+            title: { display: true, text: 'Velocidade (km/h)', color: isDark ? '#fff' : '#0f172a' },
+            ticks: { color: isDark ? 'rgba(255,255,255,0.7)' : '#0f172a' }
           },
           y: { 
             grid: { display: false },
-            ticks: { font: { family: 'Outfit', weight: 'bold', size: 14 } }
+            ticks: { font: { family: 'Outfit', weight: 'bold', size: 14 }, color: isDark ? 'rgba(255,255,255,0.7)' : '#0f172a' }
           }
         }
       }
@@ -706,7 +707,7 @@
         <div class="noz-metrics">
             <div class="metric-row">
                 <span class="metric-label">P. Média p/ ${document.getElementById('numVAvg').value}km/h</span>
-                <span class="metric-val" style="color: ${statusType !== 'bad' ? '#fff' : 'var(--accent-error)'}">${avgStr} ${pUnit}</span>
+                <span class="metric-val" style="color: ${statusType !== 'bad' ? 'var(--text-main)' : 'var(--accent-error)'}">${avgStr} ${pUnit}</span>
             </div>
             <div class="metric-row">
                 <span class="metric-label">Faixa Ideal (km/h)</span>
@@ -847,6 +848,10 @@
           Chart.defaults.color = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)";
           myChart.options.scales.x.grid.color = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.08)';
           myChart.options.scales.x.title.color = isDark ? '#fff' : '#0f172a';
+          myChart.options.scales.x.ticks = myChart.options.scales.x.ticks || {};
+          myChart.options.scales.x.ticks.color = isDark ? 'rgba(255,255,255,0.7)' : '#0f172a';
+          myChart.options.scales.y.ticks = myChart.options.scales.y.ticks || {};
+          myChart.options.scales.y.ticks.color = isDark ? 'rgba(255,255,255,0.7)' : '#0f172a';
           myChart.options.plugins.tooltip.backgroundColor = isDark ? 'rgba(10,15,20,0.9)' : 'rgba(255,255,255,0.9)';
           myChart.options.plugins.tooltip.titleColor = isDark ? '#fff' : '#0f172a';
           myChart.options.plugins.tooltip.bodyColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
