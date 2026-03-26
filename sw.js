@@ -1,4 +1,4 @@
-const CACHE_NAME = 'spray-pro-v7';
+const CACHE_NAME = 'spray-pro-v007';
 const urlsToCache = [
   './',
   './index.html',
